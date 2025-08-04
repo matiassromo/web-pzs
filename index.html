@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Piscina Zero Stress - Mitad del Mundo</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+  <link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+
+<header>
+  <nav class="navbar">
+  <div class="navbar-left">
+    <img src="images/logo.png" alt="Logo" class="main-logo">
+    <div class="brand-text">
+      <div class="brand-name">PISCINA ZERO STRESS</div>
+      <div class="brand-subtitle">La mejor piscina de la Mitad del Mundo</div>
+    </div>
+  </div>
+  <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+  <ul class="navbar-links" id="menuLinks">
+    <li><a href="#bienvenidos">Bienvenidos</a></li>
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#menu">Menú</a></li>
+    <li><a href="#horarios">Horarios</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+  </ul>
+</nav>
+
+</header>
+
+<div class="container py-4">
+
+  <section id="bienvenidos" class="scroll-animate">
+    <div class="bg-white rounded shadow-sm p-4 mb-4">
+      <h2>Bienvenidos</h2>
+      <p>En Piscina Zero Stress encontrarás el lugar perfecto para escapar del estrés diario y disfrutar de un día lleno de diversión y relajación. Ubicados estratégicamente en la Mitad del Mundo, ofrecemos instalaciones modernas y servicios de primera calidad para toda la familia.</p>
+      
+      <!-- Carrusel de bienvenida -->
+      <div id="carruselBienvenida" class="carrusel-contenedor">
+        <button class="carrusel-btn prev" onclick="moverCarruselBienvenida(-1)">❮</button>
+        <div class="carrusel">
+          <img src="images/imagen1.jpg" class="carrusel-img" alt="Imagen 1">
+          <img src="images/cuartos.jpg" class="carrusel-img" alt="Imagen 2">
+          <img src="images/baile.jpg" class="carrusel-img" alt="Imagen 3">
+          <img src="images/yo.jpg" class="carrusel-img" alt="Imagen 3">
+          <img src="images/imagen3.jpg" class="carrusel-img" alt="Imagen 3">
+          
+        </div>
+        <button class="carrusel-btn next" onclick="moverCarruselBienvenida(1)">❯</button>
+      </div>
+    </div>
+  </section>
+
+  <section id="servicios" class="scroll-animate">
+    <h2>Nuestros Servicios</h2>
+    <div class="services">
+      <div class="service-card" onclick="mostrarModal('Piscina')">
+        <img src="images/piscina.png" alt="Piscina">
+        <h3>Piscina</h3>
+        <p>Disfruta de nuestra piscina con agua temperada. <span class="highlight">Uso obligatorio de gorro de baño</span>.</p>
+      </div>
+      <div class="service-card" onclick="mostrarModal('Hidromasaje')">
+        <img src="images/hidro.png" alt="Hidromasaje">
+        <h3>Hidromasaje</h3>
+        <p>Relaja tus músculos en nuestras modernas tinas de hidromasaje.</p>
+      </div>
+      <div class="service-card" onclick="mostrarModal('SaunaTurco')">
+        <img src="images/sauna-turco.png" alt="Sauna y Turco">
+        <h3>Sauna y Turco</h3>
+        <p>Desintoxica tu cuerpo y mejora tu circulación.</p>
+      </div>
+      <div class="service-card" onclick="mostrarModal('Verde')">
+        <img src="images/verde.png" alt="Área Verde">
+        <h3>Área Verde</h3>
+        <p>Espacios al aire libre para descansar y disfrutar.</p>
+      </div>
+      <div class="service-card" onclick="mostrarModal('Bar')">
+        <img src="images/bar.jpg" alt="Bar">
+        <h3>Servicio de Bar</h3>
+        <p>Bebidas y snacks refrescantes.</p>
+      </div>
+      <div class="service-card" onclick="mostrarModal('Cursos')">
+        <img src="images/cursos.png" alt="Cursos">
+        <h3>Cursos Vacacionales de Natación</h3>
+        <p>De lunes a viernes: 9h00 a 10h00 o 10h00 - 11:00.</p>
+      </div>
+    </div>
+
+    <div class="service-card servicio-unico" onclick="mostrarModal('Reservaciones')">
+      <img src="images/piscinaglobos.jpg" alt="Reservaciones">
+      <h3>Reservaciones</h3>
+      <p>¡Asegura tu lugar con anticipación y disfruta sin preocupaciones!</p>
+    </div>
+  </section>
+
+  <section id="menu" class="menu-section">
+    <h2>Nuestro Menú</h2>
+    <div class="menu-grid">
+      <div class="menu-item"><span class="emoji">🍟</span> Salchipapas</div>
+      <div class="menu-item"><span class="emoji">🍺</span> Cervezas</div>
+      <div class="menu-item"><span class="emoji">🍋</span> Limonadas</div>
+      <div class="menu-item"><span class="emoji">🍫</span> Nevados de Chocolate</div>
+      <div class="menu-item"><span class="emoji">💧</span> Aguas</div>
+      <div class="menu-item"><span class="emoji">💦</span> Guitig</div>
+      <div class="menu-item"><span class="emoji">🍎</span> Ensaladas de Frutas</div>
+      <div class="menu-item"><span class="emoji">🧀</span> Choclos con Queso</div>
+    </div>
+  </section>
+
+  <section id="horarios" class="horarios-section scroll-animate">
+    <h2>Horarios de Atención</h2>
+    <div class="horario-box animate__animated animate__fadeInUp">
+      <p>
+        <span class="horario-icon">🕘</span> <strong>Horario vacacional:</strong><br>
+        <span class="horario-detalle">Martes a Domingo</span><br>
+        <span class="horario-hora">10h00 – 19h00</span>
+      </p>
+    </div>
+    <div class="horario-box animate__animated animate__fadeInUp">
+      <p>
+        <span class="horario-icon">📚</span> <strong>Cursos Vacacionales de Natación:</strong><br>
+        <span class="horario-detalle">Lunes a Viernes</span><br>
+        <span class="horario-hora">09h00 – 10h00</span> o <span class="horario-hora">10h00 – 11h00</span>
+      </p>
+      <button class="btn btn-outline-primary mt-3" type="button" data-bs-toggle="collapse" data-bs-target="#cuposInfo" aria-expanded="false" aria-controls="cuposInfo">
+        ¿Quedan cupos disponibles?
+      </button>
+      <div class="collapse mt-3" id="cuposInfo">
+        <div class="card card-body bg-light border-0">
+          <em>Solicita información para conocer la disponibilidad de cupos en cualquiera de los dos horarios. ¡Los espacios son limitados y se llenan rápido!</em>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="contacto" class="scroll-animate">
+    <h2>Contacto</h2>
+    <div class="contact-info text-center">
+      <div class="map-wrapper mt-4">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3917.0871284482146!2d-78.45197478956736!3d-0.004791799995135889!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x91d58823d468800f%3A0xf9d77d74486d0179!2sPiscina%20Zero%20Stress%20(Mitad%20del%20Mundo)!5e1!3m2!1ses-419!2sec!4v1754256824853!5m2!1ses-419!2sec" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      </div>
+      <p>¡Te esperamos para vivir una experiencia Zero Stress!</p>
+      <div class="social-contact mt-4">
+        <div class="d-flex justify-content-center align-items-center gap-4 flex-wrap">
+          <a href="https://wa.me/593992509868" target="_blank" class="icon-link">
+            <img src="images/whatsapp.png" alt="WhatsApp" class="contact-icon">
+            <span>099 250 9868</span>
+          </a>
+          <a href="https://maps.app.goo.gl/j4BzytW4tB6A1ZT19" target="_blank" class="icon-link">
+            <img src="images/ubi.png" alt="Ubicación" class="contact-icon">
+            <span>Ver en Google Maps</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <p>&copy; 2025 Piscina Zero Stress. Todos los derechos reservados.</p>
+</footer>
+
+<!-- Modal -->
+<div id="modal-servicio" class="modal">
+  <div class="modal-content">
+    <img id="modal-img" class="modal-img" src="" alt="Servicio">
+
+    <div id="carousel-reservaciones" class="carousel slide d-none" data-bs-ride="carousel">
+      <div class="carousel-inner"></div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carousel-reservaciones" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon"></span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carousel-reservaciones" data-bs-slide="next">
+        <span class="carousel-control-next-icon"></span>
+      </button>
+    </div>
+
+    <h3 id="modal-titulo"></h3>
+    <p id="modal-descripcion"></p>
+  </div>
+</div>
+
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="scripts.js"></script>
+
+</body>
+</html>
