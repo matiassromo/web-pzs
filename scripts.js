@@ -153,3 +153,141 @@ document.querySelectorAll('.navbar-links a').forEach(link => {
     }
   });
 });
+
+/* ===== Promo Vacaciones ($5/clase hasta 29 de agosto) ===== */
+(function initPromoVacaciones(){
+  const bar = document.getElementById('promoVacaciones');
+  if(!bar) return;
+
+  // Fecha límite: 29 de agosto del año actual (hora 23:59:59 en Ecuador, UTC-5)
+  const now = new Date();
+  const year = now.getFullYear();
+  // Mes indexado desde 0: agosto = 7
+  const deadline = new Date(Date.UTC(year, 7, 30, 4, 59, 59)); 
+  // Explicación: 29/08 23:59:59 GMT-5 == 30/08 04:59:59 UTC
+
+  // Si ya pasó, oculta la barra
+  if (now.getTime() > deadline.getTime()) {
+    bar.style.display = 'none';
+    return;
+  }
+
+  // Cuenta regresiva
+  const $count = document.getElementById('promoCountdown');
+  function updateCountdown(){
+    const t = deadline.getTime() - Date.now();
+    if (t <= 0) {
+      bar.style.display = 'none';
+      clearInterval(timer);
+      return;
+    }
+    const d = Math.floor(t / (1000*60*60*24));
+    const h = Math.floor((t / (1000*60*60)) % 24);
+    const m = Math.floor((t / (1000*60)) % 60);
+    $count.textContent = `Termina en ${d}d ${h}h ${m}m`;
+  }
+  const timer = setInterval(updateCountdown, 60 * 1000); // cada minuto
+  updateCountdown();
+
+  // Cerrar manualmente
+  bar.querySelector('.promo-close')?.addEventListener('click', () => {
+    bar.classList.add('animate__fadeOutUp');
+    setTimeout(()=> bar.remove(), 250);
+  });
+})();
+
+/* ===== Popup Promo Vacaciones ($5/clase hasta 29 de agosto) ===== */
+(function(){
+  const popup = document.getElementById('promoPopup');
+  if (!popup) return;
+
+  const closeBtn = popup.querySelector('.promo-pop__close');
+  const countEl = document.getElementById('promoPopCountdown');
+
+  // Fecha límite: 29 de agosto 23:59:59 -05 (Ecuador)
+  const year = new Date().getFullYear();
+  const deadline = new Date(Date.UTC(year, 7, 30, 4, 59, 59)); 
+
+  (function(){
+  const popup    = document.getElementById('promoPopup');
+  if (!popup) return;
+
+  const dialog   = popup.querySelector('.promo-pop__dialog');
+  const backdrop = popup.querySelector('.promo-pop__backdrop');
+  const closeBtn = popup.querySelector('.promo-pop__close');
+
+  const $days = document.getElementById('cd-days');
+  const $hrs  = document.getElementById('cd-hours');
+  const $min  = document.getElementById('cd-mins');
+  const $sec  = document.getElementById('cd-secs');
+  const $wrap = popup.querySelector('.promo-countdown');
+
+  // 29/08 23:59:59 (-05) -> UTC
+  const year = new Date().getFullYear();
+  const deadline = new Date(Date.UTC(year, 7, 30, 4, 59, 59));
+
+  const pad = n => (n < 10 ? '0' + n : '' + n);
+
+  // Actualiza tarjetas y les aplica una animación al cambiar
+  function setNum(el, value){
+    if (el.textContent !== value){
+      el.textContent = value;
+      el.classList.remove('cd-anim'); // reinicia animación si ya estaba
+      // forzamos reflow para reiniciar anim
+      void el.offsetWidth;
+      el.classList.add('cd-anim');
+    }
+  }
+
+  function tick(){
+    const now = Date.now();
+    let total = Math.floor((deadline.getTime() - now)/1000);
+
+    if (total <= 0){
+      popup.remove(); clearInterval(timer); return;
+    }
+
+    const d = Math.floor(total / 86400);
+    total %= 86400;
+    const h = Math.floor(total / 3600);
+    total %= 3600;
+    const m = Math.floor(total / 60);
+    const s = total % 60;
+
+    setNum($days, pad(d));
+    setNum($hrs , pad(h));
+    setNum($min , pad(m));
+    setNum($sec , pad(s));
+
+    // Estados visuales
+    $wrap.classList.toggle('urgent',  (d === 0));
+    $wrap.classList.toggle('critical',(d === 0 && h < 1));
+  }
+
+  // Mostrar y arrancar
+  popup.classList.remove('hidden');
+  tick();
+  const timer = setInterval(tick, 1000);
+
+  // Cerrar con efecto (zoom out + fade backdrop)
+  function closeWithEffect(){
+    popup.classList.add('is-hiding');
+    dialog.classList.remove('animate__zoomIn');
+    dialog.classList.add('animate__animated','animate__zoomOut');
+    dialog.addEventListener('animationend', ()=> popup.remove(), { once:true });
+  }
+  closeBtn.addEventListener('click', closeWithEffect);
+  backdrop.addEventListener('click', closeWithEffect);
+})();
+
+  // Mostrar popup
+  popup.classList.remove('hidden');
+  updateCountdown();
+  setInterval(updateCountdown, 60000);
+
+  // Botón cerrar
+  closeBtn.addEventListener('click', ()=>{
+    popup.classList.add('animate__fadeOut');
+    setTimeout(()=> popup.remove(), 250);
+  });
+})();

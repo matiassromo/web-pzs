@@ -28,7 +28,7 @@
   <!-- Extra recomendado -->
   <meta name="theme-color" content="#ffffff">
 </head>
-  
+
 <body>
 
 <header>
@@ -49,7 +49,6 @@
     <li><a href="#contacto">Contacto</a></li>
   </ul>
 </nav>
-
 </header>
 
 <div class="container py-4">
@@ -66,9 +65,8 @@
           <img src="images/imagen1.jpg" class="carrusel-img" alt="Imagen 1">
           <img src="images/cuartos.jpg" class="carrusel-img" alt="Imagen 2">
           <img src="images/baile.jpg" class="carrusel-img" alt="Imagen 3">
-          <img src="images/yo.jpg" class="carrusel-img" alt="Imagen 3">
-          <img src="images/imagen3.jpg" class="carrusel-img" alt="Imagen 3">
-          
+          <img src="images/yo.jpg" class="carrusel-img" alt="Imagen 4">
+          <img src="images/imagen3.jpg" class="carrusel-img" alt="Imagen 5">
         </div>
         <button class="carrusel-btn next" onclick="moverCarruselBienvenida(1)">❯</button>
       </div>
@@ -185,7 +183,7 @@
   <p>&copy; 2025 Piscina Zero Stress | Desarrollado por Matías Romo.</p>
 </footer>
 
-<!-- Modal -->
+<!-- Modal de Servicios -->
 <div id="modal-servicio" class="modal">
   <div class="modal-content">
     <img id="modal-img" class="modal-img" src="" alt="Servicio">
@@ -205,9 +203,121 @@
   </div>
 </div>
 
-<!-- Scripts -->
+<!-- POPUP PROMO VACACIONES -->
+<div id="promoPopup" class="promo-pop hidden" role="dialog" aria-modal="true" aria-labelledby="promoTitle" aria-describedby="promoDesc">
+  <div class="promo-pop__backdrop"></div>
+  <div class="promo-pop__dialog animate__animated animate__zoomIn">
+    <button class="promo-pop__close" aria-label="Cerrar anuncio">✕</button>
+
+<div class="promo-pop__badge">🏊‍♀️ Últimas semanas</div>
+
+<h3 id="promoTitle" class="promo-pop__title">
+  Cursos vacacionales de natación <br> <span>$5</span> por clase
+</h3>
+
+<p id="promoDesc" class="promo-pop__text">
+  Solo hasta el <strong>29 de agosto</strong>.  
+  ¡Cupos limitados dentro del mismo horario! 🌊✨
+</p>
+
+
+
+  <div class="promo-countdown-wrapper">
+  <div class="cd-title">Termina en:</div>
+  <div class="promo-countdown" aria-live="polite">
+    <div class="cd-item">
+      <span id="cd-days" class="cd-num">00</span>
+      <span class="cd-label">días</span>
+    </div>
+    <div class="cd-sep">:</div>
+    <div class="cd-item">
+      <span id="cd-hours" class="cd-num">00</span>
+      <span class="cd-label">horas</span>
+    </div>
+    <div class="cd-sep">:</div>
+    <div class="cd-item">
+      <span id="cd-mins" class="cd-num">00</span>
+      <span class="cd-label">min</span>
+    </div>
+    <div class="cd-sep">:</div>
+    <div class="cd-item">
+      <span id="cd-secs" class="cd-num">00</span>
+      <span class="cd-label">seg</span>
+    </div>
+  </div>
+</div>
+
+
+
+    <a
+      id="promoPopCTA"
+      class="promo-pop__cta"
+      href="https://wa.me/593992509868?text=Hola%20Zero%20Stress%20%F0%9F%91%8B%20Quiero%20aprovechar%20la%20promo%20de%20clases%20de%20nataci%C3%B3n%20a%20%245%20hasta%20el%2029%20de%20agosto.%20%C2%BFPueden%20ayudarme%20con%20cupos%20y%20horarios%3F"
+      target="_blank" rel="noopener"
+    >Reservar por WhatsApp</a>
+
+  </div>
+</div>
+
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script src="scripts.js"></script>
+<script>
+/* ===== Popup Promo Vacaciones ($5/clase hasta 29 de agosto) ===== */
+(function(){
+  const popup   = document.getElementById('promoPopup');
+  if (!popup) return;
+
+  const dialog  = popup.querySelector('.promo-pop__dialog');
+  const backdrop= popup.querySelector('.promo-pop__backdrop');
+  const closeBtn= popup.querySelector('.promo-pop__close');
+  const countEl = document.getElementById('promoPopCountdown');
+
+  // Fecha límite: 29 de agosto 23:59:59 -05 (Ecuador)
+  const year = new Date().getFullYear();
+  const deadline = new Date(Date.UTC(year, 7, 30, 4, 59, 59)); // 29/08 23:59:59 -05
+
+  function pad(n){ return n < 10 ? '0'+n : n; }
+
+  function updateCountdown(){
+    const totalSec = Math.floor((deadline.getTime() - Date.now()) / 1000);
+    if (totalSec <= 0){
+      popup.remove();
+      clearInterval(timer);
+      return;
+    }
+    const days = Math.floor(totalSec / 86400);
+    const hours = Math.floor((totalSec % 86400) / 3600);
+    const mins = Math.floor((totalSec % 3600) / 60);
+    const secs = totalSec % 60;
+
+    // Muestra "Xd HH:MM:SS" si hay días, si no solo "HH:MM:SS"
+    if (days > 0) {
+      countEl.textContent = `Termina en ${days}d ${pad(hours)}:${pad(mins)}:${pad(secs)}`;
+    } else {
+      countEl.textContent = `Termina en ${pad(hours)}:${pad(mins)}:${pad(secs)}`;
+    }
+  }
+
+  // Mostrar y arrancar contador en tiempo real (cada segundo)
+  popup.classList.remove('hidden');
+  updateCountdown();
+  const timer = setInterval(updateCountdown, 1000);
+
+  // Cierre con efecto (zoom out + desvanecer fondo)
+  function closeWithEffect(){
+    popup.classList.add('is-hiding');
+    dialog.classList.remove('animate__zoomIn');
+    dialog.classList.add('animate__animated','animate__zoomOut');
+    // Espera la animación y remueve
+    dialog.addEventListener('animationend', () => popup.remove(), { once:true });
+  }
+  closeBtn.addEventListener('click', closeWithEffect);
+  // (Opcional) cerrar al hacer click fuera del diálogo
+  backdrop.addEventListener('click', closeWithEffect);
+})();
+</script>
+
 
 </body>
 </html>
