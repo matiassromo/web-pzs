@@ -33,7 +33,7 @@ Este repositorio contiene el código fuente de la página web **Piscina Zero Str
 
 1. Clonar el repositorio:
    ```bash
-   git clone https://github.com/usuario/web-pzs.git
+   git clone https://github.com/matiassromo/web-pzs.git
    ```
 2. Abrir `index.html` en el navegador.  
 3. O visitar la página en producción: 👉 [Ver sitio](https://piscinazerostress.com)
