@@ -1,192 +1,204 @@
 <!DOCTYPE html>
 <html lang="es">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="scripts.js"></script>
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Piscina Zero Stress - Mitad del Mundo</title>
 
-  <!-- Estilos -->
+  <!-- Estilos externos -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
   <link rel="stylesheet" href="estilos.css">
 
-  <!-- Favicons y PWA -->
+  <!-- Favicons / PWA -->
   <link rel="icon" href="/favicon/favicon.ico" type="image/x-icon">
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
-
-  <!-- iOS / Apple -->
   <link rel="apple-touch-icon" href="/favicon/apple-touch-icon.png">
-
-  <!-- Android -->
   <link rel="icon" type="image/png" sizes="192x192" href="/favicon/android-chrome-192x192.png">
   <link rel="icon" type="image/png" sizes="512x512" href="/favicon/android-chrome-512x512.png">
-
-  <!-- Manifest -->
   <link rel="manifest" href="/favicon/site.webmanifest">
-
-  <!-- Extra recomendado -->
   <meta name="theme-color" content="#ffffff">
 </head>
 
 <body>
-
 <header>
   <nav class="navbar">
-  <div class="navbar-left">
-    <img src="images/logo.png" alt="Logo" class="main-logo">
-    <div class="brand-text">
-      <div class="brand-name">PISCINA ZERO STRESS</div>
-      <div class="brand-subtitle">La mejor piscina de la Mitad del Mundo</div>
+    <div class="navbar-left">
+      <img src="images/logo.png" alt="Logo" class="main-logo" />
+      <div class="brand-text">
+        <div class="brand-name">PISCINA ZERO STRESS</div>
+        <div class="brand-subtitle">La mejor piscina de la Mitad del Mundo</div>
+      </div>
     </div>
-  </div>
-  <button class="menu-toggle" onclick="toggleMenu()">☰</button>
-  <ul class="navbar-links" id="menuLinks">
-    <li><a href="#bienvenidos">Bienvenidos</a></li>
-    <li><a href="#servicios">Servicios</a></li>
-    <li><a href="#menu">Menú</a></li>
-    <li><a href="#horarios">Horarios</a></li>
-    <li><a href="#contacto">Contacto</a></li>
-  </ul>
-</nav>
+
+    <button class="menu-toggle" aria-label="Abrir menú" aria-expanded="false" aria-controls="menuLinks" onclick="toggleMenu()">
+      <span></span><span></span><span></span>
+    </button>
+
+    <ul class="navbar-links" id="menuLinks">
+      <li><a href="#bienvenidos">Bienvenidos</a></li>
+      <li><a href="#servicios">Servicios</a></li>
+      <li><a href="#menu">Menú</a></li>
+      <li><a href="#horarios">Horarios</a></li>
+      <li><a href="#contacto">Contacto</a></li>
+    </ul>
+  </nav>
 </header>
 
-<div class="container py-4">
+<!-- Backdrop para menú móvil (lo usa scripts.js) -->
+<div id="menuBackdrop" class="menu-backdrop" aria-hidden="true"></div>
 
-  <section id="bienvenidos" class="scroll-animate">
-    <div class="bg-white rounded shadow-sm p-4 mb-4">
-      <h2>Bienvenidos</h2>
-      <p>En Piscina Zero Stress encontrarás el lugar perfecto para escapar del estrés diario y disfrutar de un día lleno de diversión y relajación. Ubicados estratégicamente en la Mitad del Mundo, ofrecemos instalaciones modernas y servicios de primera calidad para toda la familia.</p>
-      
-      <!-- Carrusel de bienvenida -->
-      <div id="carruselBienvenida" class="carrusel-contenedor">
-        <button class="carrusel-btn prev" onclick="moverCarruselBienvenida(-1)">❮</button>
-        <div class="carrusel">
-          <img src="images/imagen1.jpg" class="carrusel-img" alt="Imagen 1">
-          <img src="images/cuartos.jpg" class="carrusel-img" alt="Imagen 2">
-          <img src="images/baile.jpg" class="carrusel-img" alt="Imagen 3">
-          <img src="images/yo.jpg" class="carrusel-img" alt="Imagen 4">
-          <img src="images/imagen3.jpg" class="carrusel-img" alt="Imagen 5">
-        </div>
-        <button class="carrusel-btn next" onclick="moverCarruselBienvenida(1)">❯</button>
-      </div>
-    </div>
-  </section>
+<!-- HERO -->
+<section id="bienvenidos" class="hero scroll-animate" style="--hero-img: url('images/piscina.png')">
+  <div class="hero-bg hero-bg-a"></div>
+  <div class="hero-bg hero-bg-b"></div>
+  <div class="hero-overlay"></div>
 
-  <section id="servicios" class="scroll-animate">
-    <h2>Nuestros Servicios</h2>
-    <div class="services">
-      <div class="service-card" onclick="mostrarModal('Piscina')">
-        <img src="images/piscina.png" alt="Piscina">
-        <h3>Piscina</h3>
-        <p>Disfruta de nuestra piscina con agua temperada. <span class="highlight">Uso obligatorio de gorro de baño</span>.</p>
-      </div>
-      <div class="service-card" onclick="mostrarModal('Hidromasaje')">
-        <img src="images/hidro.png" alt="Hidromasaje">
-        <h3>Hidromasaje</h3>
-        <p>Relaja tus músculos en nuestras modernas tinas de hidromasaje.</p>
-      </div>
-      <div class="service-card" onclick="mostrarModal('SaunaTurco')">
-        <img src="images/sauna-turco.png" alt="Sauna y Turco">
-        <h3>Sauna y Turco</h3>
-        <p>Desintoxica tu cuerpo y mejora tu circulación.</p>
-      </div>
-      <div class="service-card" onclick="mostrarModal('Verde')">
-        <img src="images/verde.png" alt="Área Verde">
-        <h3>Área Verde</h3>
-        <p>Espacios al aire libre para descansar y disfrutar.</p>
-      </div>
-      <div class="service-card" onclick="mostrarModal('Bar')">
-        <img src="images/bar.jpg" alt="Bar">
-        <h3>Servicio de Bar</h3>
-        <p>Bebidas y snacks refrescantes.</p>
-      </div>
-      <div class="service-card" onclick="mostrarModal('Cursos')">
-        <img src="images/cursos.png" alt="Cursos">
-        <h3>Cursos Permanentes de Natación</h3>
-        <p>Martes y Jueves: 16h00 a 17h00.</p>
-      </div>
+  <div class="hero-content animate__animated animate__fadeInUp">
+    <h1 class="hero-title">¡Bienvenidos a Zero Stress!</h1>
+    <p class="hero-subtitle">Tu escape perfecto en la Mitad del Mundo 🌎</p>
+    <p class="hero-lead">Relájate, comparte en familia y disfruta de instalaciones modernas con servicios de primera calidad.</p>
+
+    <div class="hero-ctas">
+      <a class="btn-primary" href="https://wa.me/593992509868" target="_blank" rel="noopener">Reserva por WhatsApp</a>
+      <a class="btn-ghost" href="#servicios">Ver servicios</a>
     </div>
 
-    <div class="service-card servicio-unico" onclick="mostrarModal('Reservaciones')">
-      <img src="images/piscinaglobos.jpg" alt="Reservaciones">
+    <div class="hero-badges">
+      <span>💧 Piscina temperada</span>
+      <span>🫧 Hidromasaje</span>
+      <span>🧖 Sauna & Turco</span>
+      <span>🌿 Área verde</span>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICIOS -->
+<section id="servicios" class="scroll-animate">
+  <h2>Nuestros Servicios</h2>
+  <div class="services">
+    <article class="service-card" onclick="mostrarModal('Piscina')">
+      <img src="images/piscina.png" alt="Piscina" loading="lazy">
+      <h3>Piscina</h3>
+      <p>Disfruta de nuestra piscina con agua temperada. <span class="highlight">Uso obligatorio de gorro de baño</span>.</p>
+    </article>
+
+    <article class="service-card" onclick="mostrarModal('Hidromasaje')">
+      <img src="images/hidro.png" alt="Hidromasaje" loading="lazy">
+      <h3>Hidromasaje</h3>
+      <p>Relaja tus músculos en nuestras modernas tinas de hidromasaje.</p>
+    </article>
+
+    <article class="service-card" onclick="mostrarModal('SaunaTurco')">
+      <img src="images/sauna-turco.png" alt="Sauna y Turco" loading="lazy">
+      <h3>Sauna y Turco</h3>
+      <p>Desintoxica tu cuerpo y mejora tu circulación.</p>
+    </article>
+
+    <article class="service-card" onclick="mostrarModal('Verde')">
+      <img src="images/verde.png" alt="Área Verde" loading="lazy">
+      <h3>Área Verde</h3>
+      <p>Espacios al aire libre para descansar y disfrutar.</p>
+    </article>
+
+    <article class="service-card" onclick="mostrarModal('Bar')">
+      <img src="images/bar.jpg" alt="Servicio de Bar" loading="lazy">
+      <h3>Servicio de Bar</h3>
+      <p>Bebidas y snacks refrescantes.</p>
+    </article>
+
+    <article class="service-card" onclick="mostrarModal('Cursos')">
+      <img src="images/cursos.png" alt="Cursos de natación" loading="lazy">
+      <h3>Cursos Permanentes de Natación</h3>
+      <p>Martes y Jueves: 16h00 a 17h00.</p>
+    </article>
+
+    <article class="service-card" onclick="mostrarModal('Reservaciones')">
+      <img src="images/piscinaglobos.jpg" alt="Reservaciones" loading="lazy">
       <h3>Reservaciones</h3>
       <p>¡Asegura tu lugar con anticipación y disfruta sin preocupaciones!</p>
-    </div>
-  </section>
+    </article>
+  </div>
+</section>
 
-  <section id="menu" class="menu-section">
-    <h2>Nuestro Menú</h2>
-    <div class="menu-grid">
-      <div class="menu-item"><span class="emoji">🍟</span> Salchipapas</div>
-      <div class="menu-item"><span class="emoji">🍺</span> Cervezas</div>
-      <div class="menu-item"><span class="emoji">🍋</span> Limonadas</div>
-      <div class="menu-item"><span class="emoji">🍫</span> Nevados de Chocolate</div>
-      <div class="menu-item"><span class="emoji">💧</span> Aguas</div>
-      <div class="menu-item"><span class="emoji">💦</span> Guitig</div>
-      <div class="menu-item"><span class="emoji">🍎</span> Ensaladas de Frutas</div>
-      <div class="menu-item"><span class="emoji">🧀</span> Choclos con Queso</div>
-    </div>
-  </section>
+<!-- MENÚ -->
+<section id="menu" class="menu-section">
+  <h2>Nuestro Menú</h2>
+  <div class="menu-grid">
+    <div class="menu-item"><span class="emoji">🍟</span> Salchipapas</div>
+    <div class="menu-item"><span class="emoji">🍺</span> Cervezas</div>
+    <div class="menu-item"><span class="emoji">🍋</span> Limonadas</div>
+    <div class="menu-item"><span class="emoji">🍫</span> Nevados de Chocolate</div>
+    <div class="menu-item"><span class="emoji">💧</span> Aguas</div>
+    <div class="menu-item"><span class="emoji">💦</span> Guitig</div>
+    <div class="menu-item"><span class="emoji">🍎</span> Ensaladas de Frutas</div>
+    <div class="menu-item"><span class="emoji">🧀</span> Choclos con Queso</div>
+  </div>
+</section>
 
-  <section id="horarios" class="horarios-section scroll-animate">
-    <h2>Horarios de Atención</h2>
-    <div class="horario-box animate__animated animate__fadeInUp">
-      <p>
-        <span class="horario-icon"></span> <strong>Horario de Atención:</strong><br>
-        <span class="horario-detalle">Jueves a Domingo</span><br>
-        <span class="horario-hora">10h00 – 19h00</span>
-      </p>
-    </div>
-    <div class="horario-box animate__animated animate__fadeInUp">
-      <p>
-        <span class="horario-icon"></span> <strong>Cursos Permanentes de Natación:</strong><br>
-        <span class="horario-detalle">Martes y Jueves</span><br>
-        <span class="horario-hora">16h00 – 17h00</span>
-      </p>
-      <button class="btn btn-outline-primary mt-3" type="button" data-bs-toggle="collapse" data-bs-target="#cuposInfo" aria-expanded="false" aria-controls="cuposInfo">
-        ¿Quedan cupos disponibles?
-      </button>
-      <div class="collapse mt-3" id="cuposInfo">
-        <div class="card card-body bg-light border-0">
-          <em>Solicita información para conocer la disponibilidad de cupos. ¡Los espacios son limitados y se llenan rápido!</em>
-        </div>
+<!-- HORARIOS -->
+<section id="horarios" class="horarios-section scroll-animate">
+  <h2>Horarios de Atención</h2>
+
+  <div class="horario-box animate__animated animate__fadeInUp">
+    <p>
+      <strong>Horario de Atención:</strong><br>
+      <span class="horario-detalle">Jueves a Domingo</span><br>
+      <span class="horario-hora">10h00 – 19h00</span>
+    </p>
+  </div>
+
+  <div class="horario-box animate__animated animate__fadeInUp">
+    <p>
+      <strong>Cursos Permanentes de Natación:</strong><br>
+      <span class="horario-detalle">Martes y Jueves</span><br>
+      <span class="horario-hora">16h00 – 17h00</span>
+    </p>
+
+    <button class="btn btn-outline-primary mt-3" type="button" data-bs-toggle="collapse" data-bs-target="#cuposInfo" aria-expanded="false" aria-controls="cuposInfo">
+      ¿Quedan cupos disponibles?
+    </button>
+    <div class="collapse mt-3" id="cuposInfo">
+      <div class="card card-body bg-light border-0">
+        <em>Solicita información para conocer la disponibilidad de cupos. ¡Los espacios son limitados y se llenan rápido!</em>
       </div>
     </div>
-  </section>
+  </div>
+</section>
 
-  <section id="contacto" class="scroll-animate">
-    <h2>Contacto</h2>
-    <div class="contact-info text-center">
-      <div class="map-wrapper mt-4">
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3917.0871284482146!2d-78.45197478956736!3d-0.004791799995135889!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x91d58823d468800f%3A0xf9d77d74486d0179!2sPiscina%20Zero%20Stress%20(Mitad%20del%20Mundo)!5e1!3m2!1ses-419!2sec!4v1754256824853!5m2!1ses-419!2sec" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-      </div>
-      <p>¡Te esperamos para vivir una experiencia Zero Stress!</p>
-      <div class="social-contact mt-4">
-        <div class="d-flex justify-content-center align-items-center gap-4 flex-wrap">
-          <a href="https://wa.me/593992509868" target="_blank" class="icon-link">
-            <img src="images/whatsapp.png" alt="WhatsApp" class="contact-icon">
-            <span>099 250 9868</span>
-          </a>
-          <a href="https://maps.app.goo.gl/j4BzytW4tB6A1ZT19" target="_blank" class="icon-link">
-            <img src="images/ubi.png" alt="Ubicación" class="contact-icon">
-            <span>Ver en Google Maps</span>
-          </a>
-        </div>
+<!-- CONTACTO -->
+<section id="contacto" class="scroll-animate">
+  <h2>Contacto</h2>
+  <div class="contact-info text-center">
+    <div class="map-wrapper mt-4">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3917.0871284482146!2d-78.45197478956736!3d-0.004791799995135889!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x91d58823d468800f%3A0xf9d77d74486d0179!2sPiscina%20Zero%20Stress%20(Mitad%20del%20Mundo)!5e1!3m2!1ses-419!2sec!4v1754256824853!5m2!1ses-419!2sec"
+        allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+
+    <p>¡Te esperamos para vivir una experiencia Zero Stress!</p>
+    <div class="social-contact mt-4">
+      <div class="d-flex justify-content-center align-items-center gap-4 flex-wrap">
+        <a href="https://wa.me/593992509868" target="_blank" rel="noopener" class="icon-link">
+          <img src="images/whatsapp.png" alt="WhatsApp" class="contact-icon">
+          <span>099 250 9868</span>
+        </a>
+        <a href="https://maps.app.goo.gl/j4BzytW4tB6A1ZT19" target="_blank" rel="noopener" class="icon-link">
+          <img src="images/ubi.png" alt="Ubicación" class="contact-icon">
+          <span>Ver en Google Maps</span>
+        </a>
       </div>
     </div>
-  </section>
-
-</div>
+  </div>
+</section>
 
 <footer>
   <p>&copy; 2025 Piscina Zero Stress | Desarrollado por Matías Romo.</p>
 </footer>
 
 <!-- Modal de Servicios -->
-<div id="modal-servicio" class="modal">
+<div id="modal-servicio" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-titulo">
   <div class="modal-content">
     <img id="modal-img" class="modal-img" src="" alt="Servicio">
 
@@ -205,5 +217,8 @@
   </div>
 </div>
 
+<!-- JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
+<script src="scripts.js?v=6" defer></script>
 </body>
 </html>
