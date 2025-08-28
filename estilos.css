@@ -331,7 +331,8 @@ footer{
 /* Títulos centrados con líneas a los lados (Servicios, Menú y Horarios) */
 #servicios > h2,
 #menu > h2,
-#horarios > h2{
+#horarios > h2,
+#contacto > h2{
   display:flex;                 /* permite poner líneas a los lados */
   align-items:center;
   justify-content:center;
@@ -346,13 +347,16 @@ footer{
 #menu > h2::before,
 #menu > h2::after,
 #horarios > h2::before,
-#horarios > h2::after{
+#horarios > h2::after,
+#contacto > h2::before,
+#contacto > h2::after
+{
   content:"";
   height:2px;
   width:clamp(60px, 12vw, 160px); /* se adaptan al ancho */
   background:var(--c-border);
   border-radius:999px;
-}
+} 
 
 
 /* 1) Sincroniza altura del navbar en todo lado */
