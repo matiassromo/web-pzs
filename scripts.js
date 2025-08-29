@@ -1,3 +1,13 @@
+/* =========================================================================
+   PISCINA ZERO STRESS — scripts.js (versión final)
+   - Menú móvil (is-open) con delegación de clicks
+   - Scroll suave tras cerrar menú
+   - Modal de servicios
+   - Hero autoslide (crossfade 2 capas)
+   - Reveal on Scroll
+   - Navbar efecto scrolled
+   ======================================================================== */
+
 /* === Arranque siempre en top + sin restaurar scroll previo === */
 (function () {
   if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
@@ -35,7 +45,7 @@ const INFO_SERVICIOS = {
   Cursos: {
     img: "images/cursos.png",
     titulo: "Cursos Permanentes de Natación",
-    descripcion: "<strong>Martes y Jueves</strong> de 16h00 a 17h00. <em>Consulta disponibilidad de cupos</em>."
+    descripcion: "<strong>Jueves y Viernes</strong> de 17h30 a 18h30. <em>Consulta disponibilidad de cupos</em>."
   },
   Reservaciones: {
     img: "images/piscinaglobos.jpg",
@@ -45,184 +55,220 @@ const INFO_SERVICIOS = {
   }
 };
 
-/* ===== Modal de Servicios ===== */
-function mostrarModal(servicio) {
-  const modal = document.getElementById("modal-servicio");
-  const img = document.getElementById("modal-img");
-  const carrusel = document.getElementById("carousel-reservaciones");
-  const carruselInner = carrusel.querySelector(".carousel-inner");
-  const titulo = document.getElementById("modal-titulo");
-  const descripcion = document.getElementById("modal-descripcion");
+/* =========================
+   DOM Ready
+   ========================= */
+document.addEventListener('DOMContentLoaded', () => {
+  /* ====== Cache de elementos ====== */
+  const menuPanel = document.getElementById('menuLinks');   // <ul> del menú
+  const menuBtn   = document.querySelector('.menu-toggle');  // botón hamburguesa
+  const backdrop  = document.getElementById('menuBackdrop'); // capa oscura
 
-  const info = INFO_SERVICIOS[servicio];
-  if (!info) return;
-
-  titulo.textContent = info.titulo;
-  descripcion.innerHTML = info.descripcion;
-
-  if (servicio === "Reservaciones") {
-    img.classList.add("d-none");
-    carrusel.classList.remove("d-none");
-    carruselInner.innerHTML = `
-      <div class="carousel-item active">
-        <img src="${info.img}" class="d-block w-100" alt="Reservación 1">
-      </div>
-    `;
-    (info.extra || []).forEach((ruta, i) => {
-      const el = document.createElement("div");
-      el.className = "carousel-item";
-      el.innerHTML = `<img src="${ruta}" class="d-block w-100" alt="Reservación ${i + 2}">`;
-      carruselInner.appendChild(el);
-    });
-  } else {
-    carrusel.classList.add("d-none");
-    img.classList.remove("d-none");
-    img.src = info.img;
-    img.alt = info.titulo;
+  /* ====== Menú móvil (clase .is-open) ====== */
+  function openMenu() {
+    if (!menuPanel) return;
+    menuPanel.classList.add('is-open');
+    menuBtn && menuBtn.classList.add('is-open');
+    backdrop && backdrop.classList.add('is-open');
+    menuBtn && menuBtn.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden'; // bloquea scroll fondo
   }
 
-  modal.style.display = "flex";
-  modal.classList.remove("hide");
-  modal.classList.add("show");
-  setTimeout(() => modal.querySelector(".modal-content").classList.add("show"), 10);
-}
+  function closeMenu() {
+    if (!menuPanel) return;
+    menuPanel.classList.remove('is-open');
+    // compat antiguo
+    menuPanel.classList.remove('show');
+    menuBtn && menuBtn.classList.remove('is-open');
+    backdrop && backdrop.classList.remove('is-open');
+    menuBtn && menuBtn.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
 
-function cerrarModal() {
-  const modal = document.getElementById("modal-servicio");
-  const modalContent = modal.querySelector(".modal-content");
-  modalContent.classList.remove("show");
-  modalContent.classList.add("hide");
-  modal.classList.remove("show");
-  modal.classList.add("hide");
-  setTimeout(() => {
-    modal.style.display = "none";
-    modalContent.classList.remove("hide");
-  }, 300);
-}
+  function toggleMenu() {
+    if (!menuPanel) return;
+    menuPanel.classList.contains('is-open') ? closeMenu() : openMenu();
+  }
 
-// Cerrar modal al hacer clic fuera
-window.addEventListener("click", (e) => {
-  const modal = document.getElementById("modal-servicio");
-  if (e.target === modal) cerrarModal();
-});
+  // Exponer para el onclick del botón y para futuros usos
+  window.openMenu = openMenu;
+  window.closeMenu = closeMenu;
+  window.toggleMenu = toggleMenu;
 
-/* ===== Animaciones de scroll + efecto navbar ===== */
-window.addEventListener("scroll", () => {
-  document.querySelectorAll(".scroll-animate").forEach((el) => {
-    if (el.getBoundingClientRect().top < window.innerHeight - 100) {
-      el.classList.add("animate__animated", "animate__fadeInUp");
+  // Cerrar al tocar backdrop
+  backdrop && backdrop.addEventListener('click', closeMenu);
+
+  // Cerrar si se hace clic fuera del panel y del botón
+  document.addEventListener('click', (e) => {
+    if (!menuPanel || !menuPanel.classList.contains('is-open')) return;
+    if (!menuPanel.contains(e.target) && !menuBtn.contains(e.target)) closeMenu();
+  });
+
+  // Delegación de clicks en el panel del menú (un solo listener)
+  if (menuPanel) {
+    menuPanel.addEventListener('click', (e) => {
+      const a = e.target.closest('a[href^="#"]');
+      if (!a) return;
+      const href = a.getAttribute('href');
+      const target = document.querySelector(href);
+      e.preventDefault();            // evita salto brusco
+      closeMenu();                   // libera el overflow del body
+      setTimeout(() => {
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        // actualiza el hash sin interrumpir el scroll suave
+        try { history.replaceState(null, '', href); } catch {}
+      }, 40);
+    });
+  }
+
+  // Enlaces ancla fuera del panel (ej. “Ver servicios” del héroe)
+  document.querySelectorAll('.hero-ctas a[href^="#"]').forEach(a => {
+    a.addEventListener('click', (e) => {
+      const href = a.getAttribute('href');
+      const target = document.querySelector(href);
+      if (!target) return;
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      try { history.replaceState(null, '', href); } catch {}
+    });
+  });
+
+  /* ===== Modal de Servicios ===== */
+  window.mostrarModal = function (servicio) {
+    const modal = document.getElementById("modal-servicio");
+    const img = document.getElementById("modal-img");
+    const carrusel = document.getElementById("carousel-reservaciones");
+    const carruselInner = carrusel.querySelector(".carousel-inner");
+    const titulo = document.getElementById("modal-titulo");
+    const descripcion = document.getElementById("modal-descripcion");
+
+    const info = INFO_SERVICIOS[servicio];
+    if (!info) return;
+
+    titulo.textContent = info.titulo;
+    descripcion.innerHTML = info.descripcion;
+
+    if (servicio === "Reservaciones") {
+      img.classList.add("d-none");
+      carrusel.classList.remove("d-none");
+      carruselInner.innerHTML = `
+        <div class="carousel-item active">
+          <img src="${info.img}" class="d-block w-100" alt="Reservación 1">
+        </div>
+      `;
+      (info.extra || []).forEach((ruta, i) => {
+        const el = document.createElement("div");
+        el.className = "carousel-item";
+        el.innerHTML = `<img src="${ruta}" class="d-block w-100" alt="Reservación ${i + 2}">`;
+        carruselInner.appendChild(el);
+      });
+    } else {
+      carrusel.classList.add("d-none");
+      img.classList.remove("d-none");
+      img.src = info.img;
+      img.alt = info.titulo;
     }
-  });
-  const nav = document.querySelector(".navbar");
-  if (nav) nav.classList.toggle("scrolled", window.scrollY > 50);
-});
 
-/* ===== Menú móvil (unificado a clase .is-open) ===== */
-function openMenu() {
-  const menu = document.getElementById('menuLinks');
-  const btn  = document.querySelector('.menu-toggle');
-  const bd   = document.getElementById('menuBackdrop');
-  menu.classList.add('is-open');
-  btn.classList.add('is-open');
-  bd.classList.add('is-open');
-  btn.setAttribute('aria-expanded', 'true');
-  document.body.style.overflow = 'hidden';
-}
+    modal.style.display = "flex";
+    modal.classList.remove("hide");
+    modal.classList.add("show");
+    setTimeout(() => modal.querySelector(".modal-content").classList.add("show"), 10);
+  };
 
-function closeMenu() {
-  const menu = document.getElementById('menuLinks');
-  const btn  = document.querySelector('.menu-toggle');
-  const bd   = document.getElementById('menuBackdrop');
-  menu.classList.remove('is-open');
-  btn.classList.remove('is-open');
-  bd.classList.remove('is-open');
-  btn.setAttribute('aria-expanded', 'false');
-  document.body.style.overflow = '';
-}
+  window.cerrarModal = function () {
+    const modal = document.getElementById("modal-servicio");
+    const modalContent = modal.querySelector(".modal-content");
+    modalContent.classList.remove("show");
+    modalContent.classList.add("hide");
+    modal.classList.remove("show");
+    modal.classList.add("hide");
+    setTimeout(() => {
+      modal.style.display = "none";
+      modalContent.classList.remove("hide");
+    }, 300);
+  };
 
-function toggleMenu() {
-  const menu = document.getElementById('menuLinks');
-  menu.classList.contains('is-open') ? closeMenu() : openMenu();
-}
-
-// Cierra al tocar enlaces o backdrop
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelectorAll('.navbar-links a').forEach(a => a.addEventListener('click', closeMenu));
-  const backdrop = document.getElementById('menuBackdrop');
-  if (backdrop) backdrop.addEventListener('click', closeMenu);
-});
-
-// Cerrar si se hace clic fuera del panel y del botón (extra)
-document.addEventListener('click', (e) => {
-  const menu = document.getElementById('menuLinks');
-  const btn  = document.querySelector('.menu-toggle');
-  if (!menu.classList.contains('is-open')) return;
-  if (!menu.contains(e.target) && !btn.contains(e.target)) closeMenu();
-});
-
-/* ===== HERO autoslide (crossfade en 2 capas) ===== */
-(function () {
-  const hero = document.getElementById("bienvenidos");
-  if (!hero) return;
-
-  const capaA = hero.querySelector(".hero-bg-a");
-  const capaB = hero.querySelector(".hero-bg-b");
-  const fotosHero = [
-    "images/piscina.png",
-    "images/imagen1.jpg",
-    "images/cuartos.jpg",
-    "images/baile.jpg",
-    "images/yo.jpg",
-    "images/imagen3.jpg",
-  ];
-
-  const INTERVALO = 3000;
-  let i = 0, usandoA = true;
-
-  capaA.style.backgroundImage = `url('${fotosHero[i]}')`;
-  capaA.classList.add("is-visible");
-
-  setInterval(() => {
-    const next = (i + 1) % fotosHero.length;
-    const vis = usandoA ? capaA : capaB;
-    const hid = usandoA ? capaB : capaA;
-    hid.style.backgroundImage = `url('${fotosHero[next]}')`;
-    hid.classList.add("is-visible");
-    vis.classList.remove("is-visible");
-    usandoA = !usandoA;
-    i = next;
-  }, INTERVALO);
-})();
-
-/* ===== Reveal on Scroll global (aparece una vez) ===== */
-(function(){
-  const groups = [
-    ".service-card",
-    ".menu-grid > .menu-item",
-    ".horarios-section .horario-box",
-    "#bienvenidos .hero-badges span",
-    ".map-wrapper",
-    ".contact-info .icon-link",
-    "section > h2",
-    "footer"
-  ];
-
-  const targets = document.querySelectorAll(groups.join(","));
-  if (!targets.length) return;
-
-  targets.forEach((el, i) => {
-    el.classList.add("reveal");
-    el.style.transitionDelay = `${(i % 6) * 60}ms`;
+  // Cerrar modal al hacer clic fuera
+  window.addEventListener("click", (e) => {
+    const modal = document.getElementById("modal-servicio");
+    if (e.target === modal) window.cerrarModal();
   });
 
-  const io = new IntersectionObserver((entries, obs) => {
-    entries.forEach((entry) => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("is-visible");
-        obs.unobserve(entry.target);
+  /* ===== Animaciones de scroll + efecto navbar ===== */
+  window.addEventListener("scroll", () => {
+    document.querySelectorAll(".scroll-animate").forEach((el) => {
+      if (el.getBoundingClientRect().top < window.innerHeight - 100) {
+        el.classList.add("animate__animated", "animate__fadeInUp");
       }
     });
-  }, { threshold: 0.25, rootMargin: "0px 0px -10% 0px" });
+    const nav = document.querySelector(".navbar");
+    if (nav) nav.classList.toggle("scrolled", window.scrollY > 50);
+  });
 
-  targets.forEach((el) => io.observe(el));
-})();
+  /* ===== HERO autoslide (crossfade en 2 capas) ===== */
+  (function () {
+    const hero = document.getElementById("bienvenidos");
+    if (!hero) return;
+
+    const capaA = hero.querySelector(".hero-bg-a");
+    const capaB = hero.querySelector(".hero-bg-b");
+    const fotosHero = [
+      "images/piscina.png",
+      "images/imagen1.jpg",
+      "images/cuartos.jpg",
+      "images/baile.jpg",
+      "images/yo.jpg",
+      "images/imagen3.jpg",
+    ];
+
+    const INTERVALO = 3000;
+    let i = 0, usandoA = true;
+
+    capaA.style.backgroundImage = `url('${fotosHero[i]}')`;
+    capaA.classList.add("is-visible");
+
+    setInterval(() => {
+      const next = (i + 1) % fotosHero.length;
+      const vis = usandoA ? capaA : capaB;
+      const hid = usandoA ? capaB : capaA;
+      hid.style.backgroundImage = `url('${fotosHero[next]}')`;
+      hid.classList.add("is-visible");
+      vis.classList.remove("is-visible");
+      usandoA = !usandoA;
+      i = next;
+    }, INTERVALO);
+  })();
+
+  /* ===== Reveal on Scroll global (aparece una vez) ===== */
+  (function(){
+    const groups = [
+      ".service-card",
+      ".menu-grid > .menu-item",
+      ".horarios-section .horario-box",
+      "#bienvenidos .hero-badges span",
+      ".map-wrapper",
+      ".contact-info .icon-link",
+      "section > h2",
+      "footer"
+    ];
+
+    const targets = document.querySelectorAll(groups.join(","));
+    if (!targets.length) return;
+
+    targets.forEach((el, i) => {
+      el.classList.add("reveal");
+      el.style.transitionDelay = `${(i % 6) * 60}ms`;
+    });
+
+    const io = new IntersectionObserver((entries, obs) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.25, rootMargin: "0px 0px -10% 0px" });
+
+    targets.forEach((el) => io.observe(el));
+  })();
+});

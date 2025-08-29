@@ -1,3 +1,7 @@
+/* =========================================================================
+   PISCINA ZERO STRESS — estilos.css (versión limpia)
+   ======================================================================== */
+
 /* =========================
    Fuentes & Variables
    ========================= */
@@ -8,14 +12,14 @@
   --c-bg:#f5fbff; --c-white:#fff; --c-text:#1a1a1a; --c-muted:#333;
   --c-brand-2:#0072ff; --c-brand-3:#00d4d8; --c-brand-4:#003366;
   --c-card:#eef8ff; --c-card-h:#e1f3ff; --c-border:#cceeff;
-  --container-w:1100px; --nav-h:80px; --radius:12px;
+  --container-w:1100px; --nav-h:75px; --radius:12px;
   --shadow-1:0 2px 6px rgba(0,0,0,.05); --shadow-2:0 4px 14px rgba(0,0,0,.06);
 }
 
 /* =========================
    Base
    ========================= */
-html{ scroll-behavior:smooth; }
+html{ scroll-behavior:smooth; scroll-padding-top:var(--nav-h); }
 html, body{ overflow-x:hidden; }
 
 body{
@@ -24,7 +28,7 @@ body{
   color:var(--c-text);
   background:var(--c-bg);
   line-height:1.6;
-  padding-top:75px; /* igual que altura navbar */
+  padding-top:var(--nav-h);
 }
 
 img, video, iframe{ max-width:100%; height:auto; }
@@ -40,12 +44,13 @@ img, video, iframe{ max-width:100%; height:auto; }
    Navbar (fijo)
    ========================= */
 .navbar{
-  position:fixed; inset:0 0 auto 0; z-index:1000;
+  position:fixed; inset:0 0 auto 0; z-index:3000;           /* FIX z-index */
   display:flex; align-items:center; justify-content:space-between;
   padding:.6rem 2rem;
   background:rgb(3,130,176);
   backdrop-filter:blur(4px);
   transition:background .3s, box-shadow .3s;
+  min-height:var(--nav-h);
 }
 .navbar.scrolled{ background:rgba(3,130,176,.7); }
 .navbar-left{ display:flex; align-items:center; gap:1rem; }
@@ -60,6 +65,7 @@ img, video, iframe{ max-width:100%; height:auto; }
 .brand-name{ color:#fff; font-weight:700; font-size:2rem; }
 .brand-subtitle{ color:#d7f6ff; font-size:1rem; text-align:center; }
 
+/* Enlaces (desktop) */
 .navbar-links{
   list-style:none; display:flex; gap:1.5rem; margin:0; padding:0;
 }
@@ -68,9 +74,30 @@ img, video, iframe{ max-width:100%; height:auto; }
 }
 .navbar-links a:hover{ color:#cceeff; }
 
+/* Botón hamburguesa (oculto en desktop) */
 .menu-toggle{
-  display:none; background:none; border:0; color:#fff; font-size:2rem; cursor:pointer;
+  display:none; background:transparent; border:2px solid rgba(255,255,255,.65);
+  border-radius:10px; padding:.4rem .5rem; cursor:pointer; line-height:0;
+  transition:transform .15s ease, border-color .2s ease, background .2s ease;
 }
+.menu-toggle:active{ transform:scale(.96); }
+.menu-toggle span{
+  display:block; width:22px; height:2px; background:#fff; margin:5px 0;
+  transition:transform .25s ease, opacity .2s ease, width .2s ease;
+  will-change:transform, opacity, width;
+}
+/* hamburguesa -> X */
+.menu-toggle.is-open span:nth-child(1){ transform:translateY(7px) rotate(45deg); }
+.menu-toggle.is-open span:nth-child(2){ opacity:0; width:0; }
+.menu-toggle.is-open span:nth-child(3){ transform:translateY(-7px) rotate(-45deg); }
+
+/* Backdrop del menú móvil */
+.menu-backdrop{
+  position:fixed; inset:0; background:rgba(0,0,0,0);
+  opacity:0; pointer-events:none; transition:opacity .18s ease, background .18s ease;
+  z-index:2000;                                                /* FIX z-index */
+}
+.menu-backdrop.is-open{ background:rgba(0,0,0,.25); opacity:1; pointer-events:auto; }
 
 /* =========================
    Secciones & Títulos
@@ -80,25 +107,21 @@ section{
   padding:2rem; margin-bottom:2rem; box-shadow:var(--shadow-1);
   scroll-margin-top:calc(var(--nav-h) + 20px);
 }
-h2 {
+h2{
   font-size:1.6rem;
   color:#0077cc;
   border-bottom:2px solid var(--c-border);
   padding-bottom:.5rem;
   margin-bottom:1.5rem;
 }
-
-/* Si quieres blindarlo aún más contra píxeles rebeldes del reveal */
-section.scroll-animate{ overflow:clip; }
+section.scroll-animate{ overflow:clip; } /* blindaje reveal */
 
 /* =========================
    HERO (crossfade 2 capas)
    ========================= */
 .hero{
-  position:relative; min-height:calc(100dvh - var(--nav-h)); /* dvh para móvil */
-  display:grid; place-items:center;
-  background:var(--hero-img) center/cover no-repeat; border-radius:0;
-  overflow:hidden;
+  position:relative; min-height:calc(100dvh - var(--nav-h));
+  display:grid; place-items:center; border-radius:0; overflow:hidden;
 }
 .hero .hero-bg{
   position:absolute; inset:0; background:var(--hero-img) center/cover no-repeat;
@@ -106,14 +129,12 @@ section.scroll-animate{ overflow:clip; }
   filter:blur(1px) brightness(.85); transform:scale(1.05);
 }
 .hero .hero-bg.is-visible{ opacity:1; }
-
 .hero-overlay{
   position:absolute; inset:0;
   background:
     radial-gradient(1100px 560px at 18% 42%, rgba(0,0,0,.42), transparent 60%),
     linear-gradient(90deg, rgba(0,0,0,.46) 0%, rgba(0,0,0,.26) 50%, rgba(0,0,0,.10) 75%, transparent 100%);
 }
-
 .hero-content{ position:relative; z-index:1; width:min(920px,92%); color:#fff; text-align:left; padding:1.25rem; }
 .hero-title{
   font-family:'Pacifico',cursive; font-weight:700; font-size:clamp(2.5rem,5vw,3.8rem);
@@ -126,7 +147,6 @@ section.scroll-animate{ overflow:clip; }
   font-family:'Merriweather',serif; font-style:italic;
   font-size:clamp(1.05rem,1.6vw,1.25rem); line-height:1.7; color:#f1faff; max-width:55ch; margin:0 0 1.5rem;
 }
-
 .hero-ctas{ display:flex; gap:.8rem; flex-wrap:wrap; margin-bottom:1rem; }
 .btn-primary,.btn-ghost{
   display:inline-block; padding:.8rem 1.2rem; border-radius:999px; font-weight:700;
@@ -137,7 +157,6 @@ section.scroll-animate{ overflow:clip; }
 .btn-primary:hover{ transform:translateY(-2px); background:#005dd6; }
 .btn-ghost{ background:rgba(255,255,255,.7); color:#005dd6; border:2px solid #005dd6; }
 .btn-ghost:hover{ background:#005dd6; color:#fff; transform:translateY(-2px); }
-
 .hero-badges{ display:flex; flex-wrap:wrap; gap:.5rem; }
 .hero-badges span{
   background:rgba(0,0,0,.35); border:1px solid rgba(255,255,255,.35);
@@ -151,14 +170,11 @@ section.scroll-animate{ overflow:clip; }
   display:grid; gap:2rem; align-items:stretch;
   grid-template-columns:repeat(1,minmax(260px,1fr));
 }
-@media (min-width:768px){
-  .services{ grid-template-columns:repeat(2,minmax(300px,1fr)); }
-}
+@media (min-width:768px){ .services{ grid-template-columns:repeat(2,minmax(300px,1fr)); } }
 @media (min-width:1100px){
   .services{ grid-template-columns:repeat(3,1fr); }
   .services>.service-card:last-child:nth-child(3n+1){ grid-column:2; }
 }
-
 .service-card{
   background:var(--c-card); border-radius:16px; padding:1.75rem 1.25rem;
   box-shadow:var(--shadow-2); display:flex; flex-direction:column; cursor:pointer;
@@ -212,7 +228,6 @@ section.scroll-animate{ overflow:clip; }
 }
 .icon-link:hover{ transform:scale(1.05); color:#004a99; }
 .contact-icon{ width:32px; height:32px; object-fit:contain; }
-
 .map-wrapper{
   position:relative; width:100%; height:300px; overflow:hidden;
   border-radius:10px; box-shadow:0 2px 8px rgba(0,0,0,.1); margin-top:1rem;
@@ -231,13 +246,12 @@ footer{
    Modal servicios
    ========================= */
 .modal{
-  display:none; position:fixed; inset:0; z-index:1000;
+  display:none; position:fixed; inset:0; z-index:1200;
   background:rgba(0,0,0,.6); backdrop-filter:blur(3px);
   justify-content:center; align-items:center; opacity:0; transition:opacity .3s;
 }
 .modal.show{ display:flex; opacity:1; }
 .modal.hide{ opacity:0; transition:opacity .25s; }
-
 .modal-content{
   position:relative; background:#fff; border-radius:10px;
   max-width:min(92vw,640px); padding:20px; text-align:center;
@@ -249,24 +263,12 @@ footer{
 .modal-content p{ color:#333; }
 
 /* =========================
-   Reveal sin overflow fantasma
+   Reveal (aparece una vez)
    ========================= */
-.reveal{
-  opacity:0;
-  /* sin transform aquí para no empujar el layout */
-  transition:opacity .6s ease;
-  will-change:opacity, transform;
-}
-.reveal.is-visible{
-  opacity:1;
-  animation:fadeUp .6s ease both; /* both aplica el 'to' al final */
-}
-@keyframes fadeUp{
-  from{ transform:translateY(18px); }
-  to{ transform:none; }
-}
+.reveal{ opacity:0; transition:opacity .6s ease; will-change:opacity, transform; }
+.reveal.is-visible{ opacity:1; animation:fadeUp .6s ease both; }
+@keyframes fadeUp{ from{ transform:translateY(18px); } to{ transform:none; } }
 
-/* Respeta “reducir movimiento” */
 @media (prefers-reduced-motion: reduce){
   .reveal{ transition:none; }
   .reveal.is-visible{ animation:none; }
@@ -276,7 +278,7 @@ footer{
    Responsive
    ========================= */
 
-/* <= 992px (tablets grandes) */
+/* <= 992px */
 @media (max-width:992px){
   h2{ font-size:1.4rem; }
   .main-logo{ width:70px; height:50px; }
@@ -284,29 +286,66 @@ footer{
   .brand-subtitle{ font-size:.9rem; }
 }
 
-/* <= 768px (móvil) */
+/* ===== MÓVIL: Navbar en grid + panel flotante ===== */
 @media (max-width:768px){
-  .hero{ min-height:60vh; }
+  /* Navbar: grid 3 columnas (logo | marca | botón) */
+  .navbar{
+    display:grid;
+    grid-template-columns:auto 1fr auto;
+    align-items:center;
+    padding:.5rem 1rem;
+    -webkit-backdrop-filter:none; backdrop-filter:none;
+  }
+  .navbar-left{ gap:.6rem; }
+  .main-logo{ width:56px; height:46px; border-radius:10px; box-shadow:0 1px 4px rgba(0,0,0,.15); }
+  .brand-text{ min-width:0; }
+  .brand-name{ font-size:1.35rem; line-height:1.1; margin:0; }
+  .brand-subtitle{ font-size:.85rem; line-height:1.1; margin:0; }
+
+  /* Mostrar botón hamburguesa */
+  .menu-toggle{ display:block; justify-self:end; font-size:1.8rem; }
+
+  /* Panel del menú (unificado .is-open) */
+  .navbar-links{
+    position:fixed;
+    top:calc(var(--nav-h) + .5rem);
+    right:.75rem; left:auto; bottom:auto;
+
+    display:flex; flex-direction:column; gap:.25rem; padding:.6rem;
+    width:min(82vw, 320px); max-height:70vh; overflow:auto;
+
+    background:rgba(1,18,26,.92);
+    border:1px solid rgba(255,255,255,.12);
+    border-radius:14px;
+    box-shadow:0 10px 28px rgba(0,0,0,.35);
+    z-index:3001;                                        /* FIX z-index */
+
+    /* cerrado (sin display:none para permitir animación) */
+    opacity:0; transform:scale(.96) translateY(-6px);
+    visibility:hidden; pointer-events:none;
+    transition:opacity .18s ease, transform .18s ease, visibility 0s linear .18s;
+  }
+  .navbar-links.is-open{
+    opacity:1; transform:scale(1) translateY(0);
+    visibility:visible; pointer-events:auto;
+  }
+
+  .navbar-links a{
+    color:#fff; padding:.7rem .9rem; border-radius:10px; display:block;
+  }
+  .navbar-links a:hover{ background:rgba(255,255,255,.08); }
+
+  /* Hero ajustes */
+  .hero{ min-height:60dvh; }
   .hero-content{ text-align:center; }
   .hero-lead{ margin-inline:auto; }
   .hero-badges{ justify-content:center; }
 
-  .menu-toggle{ display:block; position:absolute; right:1.5rem; top:1.2rem; }
-
-  /* Menú móvil fijo ocupando pantalla (evita doble scroll) */
-  .navbar-links{
-    display:none; flex-direction:column;
-    position:fixed; top:var(--nav-h); left:0; right:0; bottom:0;
-    background:rgba(0,0,0,.9);
-    padding:2rem 1rem; overflow-y:auto; z-index:999;
-  }
-  .navbar-links a{ padding:.5rem 1rem; display:block; }
-  .navbar-links.show{ display:flex; }
-
+  /* Modal */
   .modal-content{ margin:1rem; width:90%; }
 }
 
-/* <= 600px (mobile refinements) */
+/* <= 600px */
 @media (max-width:600px){
   .hero-content{ padding:1rem .75rem; }
   .hero-title{ font-size:clamp(2rem,9vw,3rem); }
@@ -317,7 +356,7 @@ footer{
   .service-card img{ height:190px; }
 }
 
-/* 600–1099px (tablets: 2 columnas) */
+/* 600–1099px */
 @media (min-width:600px) and (max-width:1099px){
   .services{ grid-template-columns:repeat(2, minmax(280px,1fr)); }
 }
@@ -328,239 +367,20 @@ footer{
   .modal-content img{ max-height:200px; }
 }
 
-/* Títulos centrados con líneas a los lados (Servicios, Menú y Horarios) */
+/* =========================
+   Títulos centrados con líneas laterales
+   ========================= */
 #servicios > h2,
 #menu > h2,
 #horarios > h2,
 #contacto > h2{
-  display:flex;                 /* permite poner líneas a los lados */
-  align-items:center;
-  justify-content:center;
-  gap:1rem;
-  text-align:center;
-  border-bottom:0;              /* quitamos la línea inferior global */
-  margin:0 auto 2rem;
+  display:flex; align-items:center; justify-content:center; gap:1rem;
+  text-align:center; border-bottom:0; margin:0 auto 2rem;
 }
-
-#servicios > h2::before,
-#servicios > h2::after,
-#menu > h2::before,
-#menu > h2::after,
-#horarios > h2::before,
-#horarios > h2::after,
-#contacto > h2::before,
-#contacto > h2::after
-{
-  content:"";
-  height:2px;
-  width:clamp(60px, 12vw, 160px); /* se adaptan al ancho */
-  background:var(--c-border);
-  border-radius:999px;
-} 
-
-
-/* 1) Sincroniza altura del navbar en todo lado */
-:root{ --nav-h:75px; }               /* <- si tu barra mide ~75px */
-body{ padding-top: var(--nav-h); }
-.navbar{ min-height: var(--nav-h); }
-
-/* 2) Navbar limpio en móvil: grid 3 columnas + botón no absoluto */
-@media (max-width: 768px){
-  .navbar{
-    display: grid;
-    grid-template-columns: auto 1fr auto; /* logo | marca | botón */
-    align-items: center;
-    padding: .5rem 1rem;
-  }
-
-  .navbar-left{ gap: .6rem; }
-  .main-logo{ width:56px; height:46px; border-radius:10px; box-shadow:0 1px 4px rgba(0,0,0,.15); }
-
-  .brand-text{ min-width:0; }        /* evita empujes raros */
-  .brand-name{ font-size:1.35rem; line-height:1.1; margin:0; }
-  .brand-subtitle{ font-size:.85rem; line-height:1.1; margin:0; }
-
-  .menu-toggle{
-    display:block;
-    position: static;                 /* <- ya no absolute */
-    justify-self: end;                /* alinea a la derecha */
-    font-size: 1.8rem;
-    margin-left: .5rem;
-  }
-
-  /* tu menú móvil fixed se mantiene igual */
-  .navbar-links{
-    display:none; flex-direction:column;
-    position:fixed; top:var(--nav-h); left:0; right:0; bottom:0;
-    background:rgba(0,0,0,.9);
-    padding:2rem 1rem; overflow-y:auto; z-index:999;
-  }
-  .navbar-links.show{ display:flex; }
-}
-
-
-/* Menú móvil: cubrir toda la pantalla, por encima del navbar */
-@media (max-width: 768px){
-  /* Evita que .navbar cree un containing block para los fixed */
-  .navbar{
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
-  }
-
-  .navbar-links{
-    position: fixed;
-    top: var(--nav-h);
-    left: 0; right: 0; bottom: 0;
-    display: none;
-    flex-direction: column;
-    background: rgba(2, 67, 83, 0.92);
-    padding: 2rem 1rem;
-    overflow-y: auto;
-    z-index: 1100;              /* por encima del navbar (1000) */
-    overscroll-behavior: contain; /* no arrastra el fondo */
-  }
-  .navbar-links.show{ display: flex; }
-  .navbar-links a{ color: #fff; padding: .75rem 1rem; display: block; }
-}
-
-
-/* === Botón hamburguesa animado === */
-.menu-toggle{
-  display:none; background:transparent; border:2px solid rgba(255,255,255,.65);
-  border-radius:10px; padding:.4rem .5rem; cursor:pointer; line-height:0;
-}
-.menu-toggle span{
-  display:block; width:22px; height:2px; background:#fff; margin:5px 0;
-  transition:transform .25s ease, opacity .2s ease, width .2s ease;
-  will-change:transform, opacity, width;
-}
-/* Estado abierto -> "X" */
-.menu-toggle.is-open span:nth-child(1){ transform:translateY(7px) rotate(45deg); }
-.menu-toggle.is-open span:nth-child(2){ opacity:0; width:0; }
-.menu-toggle.is-open span:nth-child(3){ transform:translateY(-7px) rotate(-45deg); }
-
-/* === Panel compacto del menú en móvil === */
-@media (max-width:768px){
-  .menu-toggle{ display:block; }
-
-  /* El navbar ya no crea problemas con fixed */
-  .navbar{ -webkit-backdrop-filter:none; backdrop-filter:none; }
-
-  .navbar-links{
-    position:fixed;
-    top:calc(var(--nav-h) + .5rem);
-    right:.75rem;
-    left:auto; bottom:auto;
-    display:none; flex-direction:column;
-    width:min(82vw, 320px); max-height:70vh; overflow:auto;
-    background:rgba(1,18,26,.9);
-    border:1px solid rgba(255,255,255,.12);
-    border-radius:14px;
-    box-shadow:0 10px 28px rgba(0,0,0,.35);
-    padding:.6rem;
-    z-index:1100;
-
-    /* animación de aparición */
-    opacity:0; transform:scale(.96) translateY(-6px);
-    transition:opacity .18s ease, transform .18s ease;
-  }
-  .navbar-links.show{ display:flex; opacity:1; transform:scale(1) translateY(0); }
-
-  .navbar-links a{
-    color:#fff; padding:.7rem .9rem; border-radius:10px; display:block;
-  }
-  .navbar-links a:active,
-  .navbar-links a:hover{ background:rgba(255,255,255,.08); }
-}
-
-/* === Ícono hamburguesa animado === */
-.menu-toggle{
-  display:none; background:transparent; border:2px solid rgba(255,255,255,.65);
-  border-radius:10px; padding:.4rem .5rem; cursor:pointer; line-height:0;
-}
-.menu-toggle span{
-  display:block; width:22px; height:2px; background:#fff; margin:5px 0;
-  transition:transform .25s ease, opacity .2s ease, width .2s ease;
-  will-change:transform, opacity, width;
-}
-/* Estado abierto → "X" */
-.menu-toggle.is-open span:nth-child(1){ transform:translateY(7px) rotate(45deg); }
-.menu-toggle.is-open span:nth-child(2){ opacity:0; width:0; }
-.menu-toggle.is-open span:nth-child(3){ transform:translateY(-7px) rotate(-45deg); }
-
-/* Mostrar botón solo en móvil */
-@media (max-width:768px){
-  .menu-toggle{ display:block; }
-}
-
-/* realce de interacción del botón */
-.menu-toggle{ transition: transform .15s ease, border-color .2s ease, background .2s ease; }
-.menu-toggle:active{ transform: scale(.96); }
-
-
-/* --- Botón hamburguesa animado --- */
-.menu-toggle{
-  background:transparent; border:2px solid rgba(255,255,255,.65);
-  border-radius:10px; padding:.4rem .5rem; cursor:pointer; line-height:0;
-  transition:transform .15s ease, border-color .2s ease, background .2s ease;
-}
-.menu-toggle:active{ transform:scale(.96); }
-.menu-toggle span{
-  display:block; width:22px; height:2px; background:#fff; margin:5px 0;
-  transition:transform .25s ease, opacity .2s ease, width .2s ease;
-  will-change:transform, opacity, width;
-}
-/* hamburguesa -> X */
-.menu-toggle.is-open span:nth-child(1){ transform:translateY(7px) rotate(45deg); }
-.menu-toggle.is-open span:nth-child(2){ opacity:0; width:0; }
-.menu-toggle.is-open span:nth-child(3){ transform:translateY(-7px) rotate(-45deg); }
-
-/* --- Backdrop que oscurece el fondo --- */
-.menu-backdrop{
-  position:fixed; inset:0; background:rgba(0,0,0,.0);
-  opacity:0; pointer-events:none; transition:opacity .2s ease, background .2s ease;
-  z-index:1098; /* por debajo del panel (1099) y por encima del resto */
-}
-.menu-backdrop.is-open{
-  background:rgba(0,0,0,.25); opacity:1; pointer-events:auto;
-}
-
-/* --- Panel compacto animado (no usamos display:none para que sí anime) --- */
-@media (max-width:768px){
-  .menu-toggle{ display:block; }
-
-  .navbar-links{
-    position:fixed;
-    top:calc(var(--nav-h) + .5rem);
-    right:.75rem;
-    left:auto; bottom:auto;
-
-    width:min(82vw, 320px);
-    max-height:70vh; overflow:auto;
-
-    display:flex; flex-direction:column;
-    gap:.25rem; padding:.6rem;
-
-    background:rgba(1,18,26,.92);
-    border:1px solid rgba(255,255,255,.12);
-    border-radius:14px;
-    box-shadow:0 10px 28px rgba(0,0,0,.35);
-    z-index:1099;
-
-    /* estado cerrado */
-    opacity:0; transform:scale(.96) translateY(-6px);
-    visibility:hidden; pointer-events:none;
-    transition:opacity .18s ease, transform .18s ease, visibility 0s linear .18s;
-  }
-  .navbar-links.is-open{
-    /* estado abierto */
-    opacity:1; transform:scale(1) translateY(0);
-    visibility:visible; pointer-events:auto;
-    transition:opacity .18s ease, transform .18s ease;
-  }
-
-  .navbar-links a{
-    color:#fff; padding:.7rem .9rem; border-radius:10px; display:block;
-  }
-  .navbar-links a:hover{ background:rgba(255,255,255,.08); }
+#servicios > h2::before, #servicios > h2::after,
+#menu > h2::before, #menu > h2::after,
+#horarios > h2::before, #horarios > h2::after,
+#contacto > h2::before, #contacto > h2::after{
+  content:""; height:2px; width:clamp(60px, 12vw, 160px);
+  background:var(--c-border); border-radius:999px;
 }
