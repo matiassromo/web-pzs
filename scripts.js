@@ -52,6 +52,16 @@ const INFO_SERVICIOS = {
     titulo: "Reservaciones",
     descripcion: "Asegura tu lugar para eventos, celebraciones o visitas en familia.",
     extra: ["images/reserva.jpg", "images/cumple.jpg", "images/cumple2.jpg", "images/cumple3.jpg"]
+  },
+  Parqueadero: {
+    img: "images/parqueadero.jpg",
+    titulo: "Parqueadero",
+    descripcion: "Contamos con un espacio cómodo y seguro para que pueda estacionar su vehículo mientras disfruta de nuestras instalaciones. ¡Su comodidad es lo primero!."
+  },
+  Videovigilancia: {
+    img: "images/videovigilancia.jpg",
+    titulo: "Videovigilancia",
+    descripcion: "Para su tranquilidad, nuestras instalaciones cuentan con cámaras de videovigilancia que garantizan un ambiente seguro en todo momento.."
   }
 };
 
