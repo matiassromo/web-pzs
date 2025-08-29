@@ -282,3 +282,106 @@ document.addEventListener('DOMContentLoaded', () => {
     targets.forEach((el) => io.observe(el));
   })();
 });
+// =======================================================
+// HORARIOS — semana dinámica + estado (por-abrir/abierto/por-cerrar/cerrado)
+// =======================================================
+(() => {
+  // -------- CONFIG editable --------
+  // Días abiertos: 0=Dom, 1=Lun, ..., 6=Sáb
+  const OPEN_DAYS = new Set([4, 5, 6, 0]);  // Jue, Vie, Sáb, Dom
+  const OPEN_MIN  = 10 * 60;                // 10h00
+  const CLOSE_MIN = 19 * 60;                // 19h00
+  const CLOSING_SOON_MIN = 30;              // últimos 30' = "por-cerrar"
+
+  // Si quieres forzar zona horaria, usa Intl con "America/Guayaquil".
+  // Aquí usamos la hora del navegador para evitar overhead.
+
+  // -------- Utilitarios --------
+  const pad2 = (n) => String(n).padStart(2, "0");
+  const fmt = (h, m = 0) => `${pad2(h)}h${pad2(m)}`;
+
+  const $ = (sel, root = document) => root.querySelector(sel);
+  const $$ = (sel, root = document) => Array.from(root.querySelectorAll(sel));
+
+  // -------- Pinta tira semanal (qué días abren + día actual) --------
+  function paintWeekStrip(now = new Date()) {
+    const dow = now.getDay();
+    $$('.week-strip .w-day').forEach(el => {
+      const d = Number(el.dataset.dow);
+      const isOpenDay = OPEN_DAYS.has(d);
+      el.classList.toggle('is-open',   isOpenDay);
+      el.classList.toggle('is-closed', !isOpenDay);
+      el.classList.toggle('today', d === dow);
+      // Accesibilidad
+      el.setAttribute('aria-label', `${el.textContent.trim()}: ${isOpenDay ? 'Abre' : 'Cerrado'}`);
+      el.setAttribute('aria-pressed', d === dow ? 'true' : 'false');
+    });
+  }
+
+  // -------- Calcula estado del horario regular --------
+  // Estados posibles: "por-abrir" | "abierto" | "por-cerrar" | "cerrado"
+  function getOpenState(now = new Date()) {
+    const dow   = now.getDay();
+    const mins  = now.getHours() * 60 + now.getMinutes();
+    if (!OPEN_DAYS.has(dow)) return 'cerrado';
+
+    if (mins < OPEN_MIN) return 'por-abrir';
+    if (mins >= OPEN_MIN && mins < CLOSE_MIN) {
+      return (CLOSE_MIN - mins <= CLOSING_SOON_MIN) ? 'por-cerrar' : 'abierto';
+    }
+    return 'cerrado';
+  }
+
+  // -------- Pinta el chip de estado del horario regular --------
+  window.paintMainScheduleState = function(now = new Date()) {
+    const state = getOpenState(now);
+    const labelByState = {
+      'por-abrir':  `Por abrir (${fmt(10)})`,
+      'abierto':    'Abierto',
+      'por-cerrar': `Por cerrar (${fmt(19)})`,
+      'cerrado':    'Cerrado'
+    };
+
+    $$('.cal-card[aria-label="Horario general"] .cal-state').forEach(el => {
+      // limpiar posibles clases de pulso
+      el.classList.remove('pulse-green', 'pulse-amber');
+      // setear estado
+      el.dataset.state = state;
+      el.textContent = labelByState[state] || 'Cerrado';
+
+      // micro-animaciones: solo en abierto/por-cerrar
+      if (state === 'abierto') el.classList.add('pulse-green');
+      if (state === 'por-cerrar') el.classList.add('pulse-amber');
+
+      // accesibilidad
+      el.setAttribute('role', 'status');
+      el.setAttribute('aria-live', 'polite');
+    });
+
+    // (Opcional) resaltar el dot si hoy está abierto
+    const isOpenVisual = (state === 'abierto' || state === 'por-cerrar');
+    $$('.tl-dot').forEach(dot => {
+      dot.style.boxShadow = isOpenVisual
+        ? '0 0 0 8px rgba(24,106,59,.12)'
+        : '0 0 0 6px rgba(0,114,255,.12)';
+    });
+  }
+
+  // -------- Init + auto refresh --------
+  function paintAll() {
+    const now = new Date();
+    paintWeekStrip(now);
+    paintMainScheduleState(now);
+  }
+
+  // Pintar al cargar
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', paintAll);
+  } else {
+    paintAll();
+  }
+
+  // Actualizar cada minuto (por si el usuario deja abierta la página)
+  setInterval(paintAll, 60 * 1000);
+
+})();

@@ -132,7 +132,6 @@
     </article>
   </div>
 </section>
-
 <!-- MENÚ -->
 <section id="menu" class="menu-section">
   <h2>Nuestro Menú</h2>
@@ -145,9 +144,101 @@
     <div class="menu-item"><span class="emoji">🍺</span> Cervezas</div>
     <div class="menu-item"><span class="emoji">🥤</span> Bebidas y Jugos</div>
   </div>
-</section>
+</section> 
 
-<!-- HORARIOS -->
+<!--<section id="menu" class="menu-section">
+  <h2>Nuestro Menú</h2>
+
+  <div class="menu-grid">
+    <!-- Card -
+    <article class="menu-card">
+      <figure class="mc-media">
+        <img src="images/salchipapa.jpg" alt="Salchipapas">
+        <span class="mc-badge">Popular</span>
+      </figure>
+      <header class="mc-body">
+        <h3 class="mc-title">Salchipapas</h3>
+        <p class="mc-desc">Crujientes con salsas a tu eleccion.</p>
+      </header>
+      <footer class="mc-footer">
+      </footer>
+    </article>
+
+    <article class="menu-card">
+      <figure class="mc-media">
+        <img src="images/choclo.jpg" alt="Choclos con Queso">
+        <!--<span class="mc-badge mc-badge-alt">Nuevo</span>-
+      </figure>
+      <header class="mc-body">
+        <h3 class="mc-title">Choclos con Queso</h3>
+        <p class="mc-desc">Maíz tierno + queso fresco.</p>
+      </header>
+      <footer class="mc-footer">
+        <span class="mc-price">$2.50</span>
+        <span class="mc-tag">🧀 Comidas</span>
+      </footer>
+    </article>
+
+    <article class="menu-card">
+      <figure class="mc-media">
+        <img src="images/menu/ensalada-fruta.jpg" alt="Ensaladas de Frutas">
+      </figure>
+      <header class="mc-body">
+        <h3 class="mc-title">Ensaladas de Frutas</h3>
+        <p class="mc-desc">Frescas y de temporada.</p>
+      </header>
+      <footer class="mc-footer">
+        <span class="mc-price">$3.00</span>
+        <span class="mc-tag">🍎 Postres</span>
+      </footer>
+    </article>
+
+    <article class="menu-card">
+      <figure class="mc-media">
+        <img src="images/menu/limonada.jpg" alt="Limonadas">
+      </figure>
+      <header class="mc-body">
+        <h3 class="mc-title">Limonadas</h3>
+        <p class="mc-desc">Clásica, hierbabuena o maracuyá.</p>
+      </header>
+      <footer class="mc-footer">
+        <span class="mc-price">$1.50</span>
+        <span class="mc-tag">🍋 Bebidas</span>
+      </footer>
+    </article>
+
+    <article class="menu-card">
+      <figure class="mc-media">
+        <img src="images/menu/nevado.jpg" alt="Nevados de Chocolate">
+      </figure>
+      <header class="mc-body">
+        <h3 class="mc-title">Nevados de Chocolate</h3>
+        <p class="mc-desc">El dulce perfecto post-piscina.</p>
+      </header>
+      <footer class="mc-footer">
+        <span class="mc-price">$2.50</span>
+        <span class="mc-tag">🍫 Postres</span>
+      </footer>
+    </article>
+
+    <article class="menu-card">
+      <figure class="mc-media">
+        <img src="images/menu/cerveza.jpg" alt="Cervezas">
+      </figure>
+      <header class="mc-body">
+        <h3 class="mc-title">Cervezas</h3>
+        <p class="mc-desc">Bien frías.</p>
+      </header>
+      <footer class="mc-footer">
+        <span class="mc-price">$2.50</span>
+        <span class="mc-tag">🍺 Bebidas</span>
+      </footer>
+    </article>
+  </div>
+</section>-->
+
+
+<!-- HORARIOS -
 <section id="horarios" class="horarios-section scroll-animate">
   <h2>Horarios de Atención</h2>
 
@@ -175,7 +266,93 @@
       </div>
     </div>
   </div>
+</section>-->
+
+<section id="horarios" class="horarios-section timeline scroll-animate">
+  <h2>Horarios de Atención</h2>
+
+  <!-- Tira semanal (el JS marcará abiertos/cerrados y "hoy") -->
+  <div class="week-strip" aria-label="Días de atención">
+    <span class="w-day" data-dow="1">Lun</span>
+    <span class="w-day" data-dow="2">Mar</span>
+    <span class="w-day" data-dow="3">Mié</span>
+    <span class="w-day" data-dow="4">Jue</span>
+    <span class="w-day" data-dow="5">Vie</span>
+    <span class="w-day" data-dow="6">Sáb</span>
+    <span class="w-day" data-dow="0">Dom</span>
+  </div>
+
+  <!-- Nodo 1: Horario general -->
+  <div class="tl-node">
+    <div class="tl-marker">
+      <span class="tl-dot"></span>
+    </div>
+
+    <div class="cal-card pro glass" aria-label="Horario general">
+      <div class="cal-side">
+        <div class="cal-icon">⏰</div>
+        <div>
+          <div class="cal-month">JUE–DOM</div>
+          <div class="cal-day">10h00–19h00</div>
+        </div>
+        <!-- Estado dinámico con 4 estados: por-abrir | abierto | por-cerrar | cerrado -->
+        <div class="cal-state" data-state="por-abrir" aria-live="polite" role="status">
+          Por abrir (10h00)
+        </div>
+      </div>
+      <div class="cal-body">
+        <div class="cal-title">
+          Atención al público
+          <span class="ribbon tip">Horario regular</span>
+        </div>
+        <p class="cal-note">Horarios regulares. <span class="muted">*Feriados pueden variar.</span></p>
+        <div class="cal-cta">
+          <a class="btn-cta whats" href="https://wa.me/593992509868" target="_blank" rel="noopener">Reservar por WhatsApp</a>
+          <a class="btn-cta maps" href="https://maps.app.goo.gl/j4BzytW4tB6A1ZT19" target="_blank" rel="noopener">Cómo llegar</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Aviso feriado -->
+  <div class="holiday-banner" role="note">
+    🎉 <strong>Feriado:</strong> el horario puede cambiar. Consulta disponibilidad antes de venir.
+  </div>
+
+  <!-- Nodo 2: Cursos (ESTÁTICO) -->
+  <div class="tl-node">
+    <div class="tl-marker">
+      <span class="tl-dot alt"></span>
+    </div>
+
+    <div class="cal-card pro glass" aria-label="Cursos de natación">
+      <div class="cal-side alt">
+        <div class="cal-icon">🏊</div>
+        <div>
+          <div class="cal-month">JUE–VIE</div>
+          <div class="cal-day">17h30–18h30</div>
+        </div>
+        <!-- Se mantiene estático -->
+        <div class="cal-state">Cupos limitados</div>
+      </div>
+      <div class="cal-body">
+        <div class="cal-title">Cursos Permanentes de Natación</div>
+        <p class="cal-note">Grupos por niveles. <a class="link" href="https://wa.me/593992509868" target="_blank" rel="noopener">Consultar disponibilidad</a></p>
+        <button class="btn btn-outline-primary mt-2" type="button" data-bs-toggle="collapse" data-bs-target="#cuposInfo" aria-expanded="false" aria-controls="cuposInfo">
+          ¿Quedan cupos?
+        </button>
+        <div class="collapse mt-2" id="cuposInfo">
+          <div class="card card-body bg-light border-0">
+            <em>Solicita información para conocer la disponibilidad. ¡Se llenan rápido!</em>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </section>
+
+
+
 
 <!-- CONTACTO -->
 <section id="contacto" class="scroll-animate">

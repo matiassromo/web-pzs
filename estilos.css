@@ -208,15 +208,181 @@ section.scroll-animate{ overflow:clip; } /* blindaje reveal */
 /* =========================
    Horarios
    ========================= */
+/* =========================================================
+   HORARIOS — Week strip + Timeline + Glass + Estados
+   (CSS DESDE CERO — autónomo)
+   ========================================================= */
+
+/* ---- Fallbacks de variables (no chocan con las tuyas) ---- */
+:root{
+  --c-brand-2: #0072ff;
+  --c-brand-3: #00d4d8;
+  --c-brand-4: #003366;
+  --c-border:  #cceeff;
+  --nav-h:     75px;
+}
+
+/* ---------- Contenedor ---------- */
 .horarios-section{
-  text-align:center; background:#f0faff; padding:2rem; border-radius:15px; box-shadow:0 4px 12px rgba(0,0,0,.05);
+  background:#eef8ff;
+  border-radius:16px;
+  padding:2.2rem 1rem 2.2rem;
+  box-shadow:0 8px 30px rgba(0,0,0,.05) inset;
 }
-.horario-box{
-  margin-bottom:1.5rem; background:#fff; padding:1rem 1.5rem;
-  border-left:6px solid var(--c-brand-2); border-radius:10px; box-shadow:var(--shadow-1);
+.horarios-section h2{
+  font-size:1.6rem;
+  color:#2a76c5;
+  text-align:center;
+  margin:0 0 1rem;
+  position:relative;
 }
-.horario-detalle{ font-weight:600; color:#333; }
-.horario-hora{ display:inline-block; font-size:1.1rem; color:var(--c-brand-2); font-weight:700; margin-top:.2rem; }
+.horarios-section h2::before,
+.horarios-section h2::after{
+  content:""; display:inline-block; vertical-align:middle;
+  width:clamp(60px,12vw,160px); height:2px; background:var(--c-border);
+  margin:0 .75rem;
+}
+
+/* ---------- Tira semanal ---------- */
+.week-strip{
+  position:sticky; top:calc(var(--nav-h) + 10px); z-index:5;
+  display:flex; gap:.5rem; justify-content:center; flex-wrap:wrap;
+  margin:.2rem auto 1.4rem; padding:.4rem .6rem;
+  background:#eff7ff; border:1px solid var(--c-border); border-radius:999px;
+  backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
+  box-shadow:0 6px 18px rgba(0,0,0,.04);
+}
+.w-day{
+  display:inline-block; padding:.45rem .75rem; border-radius:999px;
+  background:#fff; border:1px solid #d7ecff; color:#4b6b8d;
+  font:800 .95rem/1 system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Quicksand", sans-serif;
+  letter-spacing:.2px; user-select:none;
+}
+.w-day.is-open{ background:#e6f4ff; border-color:#bfe1ff; color:#065c9b; }
+.w-day.is-closed{ opacity:.55; }
+.w-day.today{ position:relative; color:#0b61c9; box-shadow:0 1px 8px rgba(0,114,255,.1); }
+.w-day.today::after{
+  content:""; position:absolute; inset:-3px; border-radius:999px;
+  border:2px solid rgba(0,114,255,.35);
+}
+
+/* ---------- Timeline vertical ---------- */
+
+.tl-node{
+  position:relative;
+  display:grid; grid-template-columns:1fr minmax(320px,960px) 1fr;
+  align-items:stretch; margin:2.2rem 0;
+}
+.tl-node .cal-card{ grid-column:2; grid-row:1; }
+.tl-node .tl-marker{ grid-column:2; grid-row:1; position:relative; }
+.tl-dot{
+  position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
+  width:18px; height:18px; border-radius:50%;
+  background:#0072ff; box-shadow:0 0 0 6px rgba(0,114,255,.12);
+}
+.tl-dot.alt{ background:#00d4d8; box-shadow:0 0 0 6px rgba(0,212,216,.14); }
+
+/* ---------- Tarjeta (glass) ---------- */
+.cal-card{
+  display:grid; grid-template-columns:220px 1fr;
+  border-radius:16px; overflow:hidden; text-align:left;
+  background:#fff; box-shadow:0 12px 28px rgba(0,0,0,.06);
+  transition:transform .18s ease, box-shadow .18s ease, background .18s ease;
+}
+.cal-card:hover{ transform:translateY(-2px); box-shadow:0 18px 40px rgba(0,0,0,.10); }
+.cal-card.glass{
+  background:rgba(255,255,255,.78);
+  -webkit-backdrop-filter:blur(12px); backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,.45);
+}
+
+/* Lado izquierdo */
+.cal-side{
+  display:grid; gap:.6rem; align-content:flex-start; padding:1.2rem;
+  background:linear-gradient(140deg,#e8f6ff 0%, #d9f0ff 80%);
+  border-right:1px solid var(--c-border);
+}
+.cal-side.alt{ background:linear-gradient(140deg,#f3f7ff 0%, #e9edff 80%); }
+
+.cal-icon{
+  width:56px; height:56px; border-radius:50%;
+  display:grid; place-items:center;
+  font-size:1.6rem; font-weight:900; color:#fff;
+  background:linear-gradient(135deg, var(--c-brand-3), var(--c-brand-2));
+  position:relative;
+}
+.cal-icon::after{ content:""; position:absolute; inset:-6px; border-radius:999px; box-shadow:0 6px 18px rgba(0,114,255,.22); }
+
+.cal-month{ font-weight:900; color:#065c9b; letter-spacing:.5px; }
+.cal-day{ font-size:1.6rem; font-weight:900; color:var(--c-brand-2); line-height:1.1; }
+
+/* Chip de estado (4 estados) */
+.cal-state{
+  width:max-content; position:relative;
+  background:#fff; border:1px dashed #d7ecff; color:#065c9b;
+  font-weight:800; font-size:.9rem; padding:.28rem .6rem; border-radius:10px;
+}
+.cal-state[data-state="por-abrir"]{  background:#eef7ff; border-color:#bfe1ff; color:#0b61c9; }
+.cal-state[data-state="abierto"]{    background:#e8fff2; border-color:#9fe0b2; color:#186a3b; }
+.cal-state[data-state="por-cerrar"]{ background:#fff8e6; border-color:#ffd89b; color:#8a5a00; }
+.cal-state[data-state="cerrado"]{    background:#f3f6f8; border-color:#d6e0e7; color:#607283; }
+
+/* Pulsos solo para abiertos / por cerrar */
+.cal-state.pulse-green::after,
+.cal-state.pulse-amber::after{
+  content:""; position:absolute; inset:-4px; border-radius:12px;
+  border:2px solid transparent; opacity:.6; animation:pulse 2.1s ease-out infinite;
+}
+.cal-state.pulse-green::after{ border-color:rgba(24,106,59,.28); }
+.cal-state.pulse-amber::after{ border-color:rgba(255,153,0,.28); }
+@keyframes pulse{ from{ transform:scale(.92); opacity:.6; } to{ transform:scale(1.15); opacity:0; } }
+
+/* Cuerpo de la tarjeta */
+.cal-body{ padding:1.2rem 1.2rem 1.4rem; }
+.cal-title{
+  font:800 1.15rem/1.2 system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Quicksand", sans-serif;
+  color:var(--c-brand-4); margin:0 0 .25rem; display:flex; gap:.5rem; align-items:center;
+}
+.cal-note{ margin:0 0 .75rem; color:#445; }
+.cal-note .muted{ color:#6b6b6b; }
+
+/* Ribbon */
+.ribbon{
+  font-size:.75rem; font-weight:900; text-transform:uppercase;
+  background:#e8f6ff; color:#065c9b; border:1px solid #cde9ff;
+  padding:.15rem .45rem; border-radius:6px;
+}
+
+/* CTAs */
+.cal-cta{ display:flex; gap:.5rem; flex-wrap:wrap; }
+.btn-cta{
+  display:inline-block; font-weight:800; padding:.6rem .9rem; border-radius:999px;
+  text-decoration:none; border:1px solid var(--c-border); background:#f7fbff;
+  transition:transform .15s ease, box-shadow .15s ease;
+}
+.btn-cta:hover{ transform:translateY(-1px); box-shadow:0 6px 18px rgba(0,114,255,.12); }
+.btn-cta.whats{ border-color:#bfe9d0; background:#eafff2; }
+.btn-cta.maps{  border-color:#bfe1ff; background:#eff7ff; }
+
+/* Banner feriado */
+.holiday-banner{
+  margin:.9rem auto 1.1rem; max-width:980px;
+  background:linear-gradient(90deg,#fff0ea,#ffe7df);
+  border:1px solid #ffd3c4; color:#7a2d00;
+  padding:.55rem .9rem; border-radius:10px; box-shadow:0 6px 14px rgba(0,0,0,.04);
+  font-size:.98rem; line-height:1.35;
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width:760px){
+  .horarios-section.timeline::before{ display:none; }
+  .tl-node{ grid-template-columns:1fr; margin:1.2rem 0; }
+  .tl-node .tl-marker{ display:none; }
+  .cal-card{ grid-template-columns:1fr; }
+  .cal-icon{ width:52px; height:52px; font-size:1.4rem; }
+  .cal-day{ font-size:1.45rem; }
+}
+
 
 /* =========================
    Contacto & Mapa
@@ -384,3 +550,75 @@ footer{
   content:""; height:2px; width:clamp(60px, 12vw, 160px);
   background:var(--c-border); border-radius:999px;
 }
+
+/* ===== Nuestro Menú (cards) ===== */
+.menu-section{
+  background:#f0faff;
+  padding:2.5rem;
+  border-radius:15px;
+  box-shadow:0 4px 14px rgba(0,0,0,.05);
+  text-align:center;
+}
+
+.menu-cats{
+  display:flex; gap:.5rem; justify-content:center; flex-wrap:wrap;
+  margin:.5rem 0 1rem;
+}
+.cat-chip{
+  border:1px solid var(--c-border);
+  background:#fff;
+  padding:.4rem .75rem;
+  border-radius:999px;
+  font-weight:700; font-size:.95rem;
+  cursor:pointer; transition:all .2s;
+}
+.cat-chip:hover{ transform:translateY(-1px); }
+.cat-chip.is-active{ background:#eaf6ff; border-color:#9fd6ff; color:#065c9b; }
+
+.menu-grid{
+  display:grid; gap:1.1rem; margin-top:1.25rem;
+  grid-template-columns:repeat(auto-fit,minmax(230px,1fr));
+}
+
+.menu-card{
+  background:#fff; border-radius:16px; overflow:hidden;
+  box-shadow:0 6px 18px rgba(0,0,0,.06);
+  transition:transform .22s ease, box-shadow .22s ease;
+  display:flex; flex-direction:column; height:100%;
+}
+.menu-card:hover{
+  transform:translateY(-4px);
+  box-shadow:0 10px 28px rgba(0,114,255,.18);
+}
+
+.mc-media{ position:relative; aspect-ratio:4/3; overflow:hidden; }
+.mc-media img{
+  width:100%; height:100%; object-fit:cover;
+  transform:scale(1.02); transition:transform .6s ease;
+}
+.menu-card:hover .mc-media img{ transform:scale(1.06); }
+
+.mc-badge{
+  position:absolute; top:.6rem; left:.6rem;
+  background:linear-gradient(90deg,#00b4ff,var(--c-brand-2));
+  color:#fff; font-weight:800; font-size:.8rem;
+  padding:.25rem .55rem; border-radius:999px;
+  box-shadow:0 6px 14px rgba(0,114,255,.35);
+}
+.mc-badge.mc-badge-alt{ background:linear-gradient(90deg,#ff9a9e,#fad0c4); color:#521b2a; }
+
+.mc-body{ padding:1rem 1rem .5rem; text-align:left; }
+.mc-title{ margin:0 0 .2rem; font-size:1.1rem; color:var(--c-brand-4); }
+.mc-desc{ margin:0; color:#555; font-size:.98rem; }
+
+.mc-footer{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:.75rem 1rem 1rem; gap:.5rem; margin-top:auto;
+}
+.mc-price{
+  background:#e6f3ff; color:#065c9b; font-weight:800;
+  padding:.25rem .6rem; border-radius:8px;
+}
+.mc-tag{ color:#666; font-weight:700; font-size:.9rem; }
+
+
