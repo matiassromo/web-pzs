@@ -333,7 +333,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // -------- Pinta el chip de estado del horario regular --------
-  window.paintMainScheduleState = function(now = new Date()) {
+  function paintMainScheduleState(now = new Date()) {
     const state = getOpenState(now);
     const labelByState = {
       'por-abrir':  `Por abrir (${fmt(10)})`,
