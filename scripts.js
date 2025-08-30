@@ -33,9 +33,10 @@ const INFO_SERVICIOS = {
     descripcion: "Purifica tu cuerpo en <strong>sauna seco</strong> y <strong>baño turco</strong>."
   },
   Verde: {
-    img: "images/verde.png",
+    img: "images/area.jpg",
     titulo: "Área Verde",
-    descripcion: "Conecta con la naturaleza en nuestras <strong>amplias áreas verdes</strong>."
+    descripcion: "Conecta con la naturaleza en nuestras <strong>amplias áreas verdes</strong>.",
+    extra: [ "images/area2.jpg", "images/verde.png"]
   },
   Bar: {
     img: "images/bar.jpg",
@@ -211,79 +212,78 @@ document.addEventListener('DOMContentLoaded', () => {
       try { history.replaceState(null, '', href); } catch {}
     });
   });
+/* ===== Modal de Servicios ===== */
+window.mostrarModal = function (servicio) {
+  const modal = document.getElementById("modal-servicio");
+  const img = document.getElementById("modal-img");
+  const carrusel = document.getElementById("carousel-reservaciones");
+  const carruselInner = carrusel.querySelector(".carousel-inner");
+  const titulo = document.getElementById("modal-titulo");
+  const descripcion = document.getElementById("modal-descripcion");
 
-  /* ===== Modal de Servicios ===== */
-  window.mostrarModal = function (servicio) {
-    const modal = document.getElementById("modal-servicio");
-    const img = document.getElementById("modal-img");
-    const carrusel = document.getElementById("carousel-reservaciones");
-    const carruselInner = carrusel.querySelector(".carousel-inner");
-    const titulo = document.getElementById("modal-titulo");
-    const descripcion = document.getElementById("modal-descripcion");
+  const info = INFO_SERVICIOS[servicio];
+  if (!info) return;
 
-    const info = INFO_SERVICIOS[servicio];
-    if (!info) return;
+  titulo.textContent = info.titulo;
+  descripcion.innerHTML = info.descripcion;
 
-    titulo.textContent = info.titulo;
-    descripcion.innerHTML = info.descripcion;
-
-    if (servicio === "Reservaciones") {
-      img.classList.add("d-none");
-      carrusel.classList.remove("d-none");
-      carruselInner.innerHTML = `
-        <div class="carousel-item active">
-          <img src="${info.img}" class="d-block w-100" alt="Reservación 1">
-        </div>
-      `;
-      (info.extra || []).forEach((ruta, i) => {
-        const el = document.createElement("div");
-        el.className = "carousel-item";
-        el.innerHTML = `<img src="${ruta}" class="d-block w-100" alt="Reservación ${i + 2}">`;
-        carruselInner.appendChild(el);
-      });
-    } else {
-      carrusel.classList.add("d-none");
-      img.classList.remove("d-none");
-      img.src = info.img;
-      img.alt = info.titulo;
-    }
-
-    modal.style.display = "flex";
-    modal.classList.remove("hide");
-    modal.classList.add("show");
-    setTimeout(() => modal.querySelector(".modal-content").classList.add("show"), 10);
-  };
-
-  window.cerrarModal = function () {
-    const modal = document.getElementById("modal-servicio");
-    const modalContent = modal.querySelector(".modal-content");
-    modalContent.classList.remove("show");
-    modalContent.classList.add("hide");
-    modal.classList.remove("show");
-    modal.classList.add("hide");
-    setTimeout(() => {
-      modal.style.display = "none";
-      modalContent.classList.remove("hide");
-    }, 300);
-  };
-
-  // Cerrar modal al hacer clic fuera
-  window.addEventListener("click", (e) => {
-    const modal = document.getElementById("modal-servicio");
-    if (e.target === modal) window.cerrarModal();
-  });
-
-  /* ===== Animaciones de scroll + efecto navbar ===== */
-  window.addEventListener("scroll", () => {
-    document.querySelectorAll(".scroll-animate").forEach((el) => {
-      if (el.getBoundingClientRect().top < window.innerHeight - 100) {
-        el.classList.add("animate__animated", "animate__fadeInUp");
-      }
+  // Mostrar carrusel para Reservaciones o Área Verde
+  if (servicio === "Reservaciones" || servicio === "Verde") {
+    img.classList.add("d-none");
+    carrusel.classList.remove("d-none");
+    carruselInner.innerHTML = `
+      <div class="carousel-item active">
+        <img src="${info.img}" class="d-block w-100" alt="${info.titulo} 1">
+      </div>
+    `;
+    (info.extra || []).forEach((ruta, i) => {
+      const el = document.createElement("div");
+      el.className = "carousel-item";
+      el.innerHTML = `<img src="${ruta}" class="d-block w-100" alt="${info.titulo} ${i + 2}">`;
+      carruselInner.appendChild(el);
     });
-    const nav = document.querySelector(".navbar");
-    if (nav) nav.classList.toggle("scrolled", window.scrollY > 50);
-  });
+  } else {
+    carrusel.classList.add("d-none");
+    img.classList.remove("d-none");
+    img.src = info.img;
+    img.alt = info.titulo;
+  }
 
+  modal.style.display = "flex";
+  modal.classList.remove("hide");
+  modal.classList.add("show");
+  setTimeout(() => modal.querySelector(".modal-content").classList.add("show"), 10);
+};
+
+window.cerrarModal = function () {
+  const modal = document.getElementById("modal-servicio");
+  const modalContent = modal.querySelector(".modal-content");
+  modalContent.classList.remove("show");
+  modalContent.classList.add("hide");
+  modal.classList.remove("show");
+  modal.classList.add("hide");
+  setTimeout(() => {
+    modal.style.display = "none";
+    modalContent.classList.remove("hide");
+  }, 300);
+};
+
+// Cerrar modal al hacer clic fuera
+window.addEventListener("click", (e) => {
+  const modal = document.getElementById("modal-servicio");
+  if (e.target === modal) window.cerrarModal();
+});
+
+/* ===== Animaciones de scroll + efecto navbar ===== */
+window.addEventListener("scroll", () => {
+  document.querySelectorAll(".scroll-animate").forEach((el) => {
+    if (el.getBoundingClientRect().top < window.innerHeight - 100) {
+      el.classList.add("animate__animated", "animate__fadeInUp");
+    }
+  });
+  const nav = document.querySelector(".navbar");
+  if (nav) nav.classList.toggle("scrolled", window.scrollY > 50);
+});
  
 // =======================================================
 // HORARIOS — semana dinámica + estado (por-abrir/abierto/por-cerrar/cerrado)
