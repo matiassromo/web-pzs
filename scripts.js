@@ -224,7 +224,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const capaB = hero.querySelector(".hero-bg-b");
     const fotosHero = [
       "images/piscina.png",
-      "images/imagen1.jpg",
+      "images/parqueadero.jpg",
       "images/cuartos.jpg",
       "images/baile.jpg",
       "images/yo.jpg",
