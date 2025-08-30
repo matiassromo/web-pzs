@@ -131,6 +131,75 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+   /* ===== HERO autoslide (crossfade en 2 capas) ===== */
+  (function () {
+    const hero = document.getElementById("bienvenidos");
+    if (!hero) return;
+
+    const capaA = hero.querySelector(".hero-bg-a");
+    const capaB = hero.querySelector(".hero-bg-b");
+    const fotosHero = [
+      "images/piscina.png",
+      "images/cuartos.jpg",
+      "images/area.jpg",
+      "images/parqueadero.jpg",
+      "images/baile.jpg",
+      "images/yo.jpg",
+      "images/imagen3.jpg",
+    ];
+
+    const INTERVALO = 3000;
+    let i = 0, usandoA = true;
+
+    capaA.style.backgroundImage = `url('${fotosHero[i]}')`;
+    capaA.classList.add("is-visible");
+
+    setInterval(() => {
+      const next = (i + 1) % fotosHero.length;
+      const vis = usandoA ? capaA : capaB;
+      const hid = usandoA ? capaB : capaA;
+      hid.style.backgroundImage = `url('${fotosHero[next]}')`;
+      hid.classList.add("is-visible");
+      vis.classList.remove("is-visible");
+      usandoA = !usandoA;
+      i = next;
+    }, INTERVALO);
+  })();
+
+  /* ===== Reveal on Scroll global (aparece una vez) ===== */
+  (function(){
+    const groups = [
+      ".service-card",
+      ".menu-grid > .menu-item",
+      ".horarios-section .horario-box",
+      "#bienvenidos .hero-badges span",
+      ".map-wrapper",
+      ".contact-info .icon-link",
+      "section > h2",
+      "footer"
+    ];
+
+    const targets = document.querySelectorAll(groups.join(","));
+    if (!targets.length) return;
+
+    targets.forEach((el, i) => {
+      el.classList.add("reveal");
+      el.style.transitionDelay = `${(i % 6) * 60}ms`;
+    });
+
+    const io = new IntersectionObserver((entries, obs) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add("is-visible");
+          obs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.25, rootMargin: "0px 0px -10% 0px" });
+
+    targets.forEach((el) => io.observe(el));
+  })();
+});
+
   // Enlaces ancla fuera del panel (ej. “Ver servicios” del héroe)
   document.querySelectorAll('.hero-ctas a[href^="#"]').forEach(a => {
     a.addEventListener('click', (e) => {
@@ -215,73 +284,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (nav) nav.classList.toggle("scrolled", window.scrollY > 50);
   });
 
-  /* ===== HERO autoslide (crossfade en 2 capas) ===== */
-  (function () {
-    const hero = document.getElementById("bienvenidos");
-    if (!hero) return;
-
-    const capaA = hero.querySelector(".hero-bg-a");
-    const capaB = hero.querySelector(".hero-bg-b");
-    const fotosHero = [
-      "images/piscina.png",
-      "images/parqueadero.jpg",
-      "images/cuartos.jpg",
-      "images/baile.jpg",
-      "images/yo.jpg",
-      "images/imagen3.jpg",
-    ];
-
-    const INTERVALO = 3000;
-    let i = 0, usandoA = true;
-
-    capaA.style.backgroundImage = `url('${fotosHero[i]}')`;
-    capaA.classList.add("is-visible");
-
-    setInterval(() => {
-      const next = (i + 1) % fotosHero.length;
-      const vis = usandoA ? capaA : capaB;
-      const hid = usandoA ? capaB : capaA;
-      hid.style.backgroundImage = `url('${fotosHero[next]}')`;
-      hid.classList.add("is-visible");
-      vis.classList.remove("is-visible");
-      usandoA = !usandoA;
-      i = next;
-    }, INTERVALO);
-  })();
-
-  /* ===== Reveal on Scroll global (aparece una vez) ===== */
-  (function(){
-    const groups = [
-      ".service-card",
-      ".menu-grid > .menu-item",
-      ".horarios-section .horario-box",
-      "#bienvenidos .hero-badges span",
-      ".map-wrapper",
-      ".contact-info .icon-link",
-      "section > h2",
-      "footer"
-    ];
-
-    const targets = document.querySelectorAll(groups.join(","));
-    if (!targets.length) return;
-
-    targets.forEach((el, i) => {
-      el.classList.add("reveal");
-      el.style.transitionDelay = `${(i % 6) * 60}ms`;
-    });
-
-    const io = new IntersectionObserver((entries, obs) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("is-visible");
-          obs.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.25, rootMargin: "0px 0px -10% 0px" });
-
-    targets.forEach((el) => io.observe(el));
-  })();
-});
+ 
 // =======================================================
 // HORARIOS — semana dinámica + estado (por-abrir/abierto/por-cerrar/cerrado)
 // =======================================================
