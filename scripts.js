@@ -46,7 +46,7 @@ const INFO_SERVICIOS = {
   Cursos: {
     img: "images/cursos.png",
     titulo: "Cursos Permanentes de Natación",
-    descripcion: "<strong>Jueves y Viernes</strong> de 17h30 a 18h30. <em>Consulta disponibilidad de cupos</em>."
+    descripcion: "<strong>Jueves y Viernes</strong> de 17h30 a 18h20. <em>Consulta disponibilidad de cupos</em>."
   },
   Reservaciones: {
     img: "images/piscinaglobos.jpg",
