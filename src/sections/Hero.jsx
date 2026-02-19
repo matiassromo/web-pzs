@@ -33,19 +33,25 @@ const Hero = () => {
         if (hasFetched.current) return;
         hasFetched.current = true;
 
-        const yaContado = sessionStorage.getItem('pzs-visita');
-        const endpoint = yaContado
-            ? 'https://countapi.mileshilliard.com/api/v1/get/piscinazerostress-ec-visitas'
-            : 'https://countapi.mileshilliard.com/api/v1/hit/piscinazerostress-ec-visitas';
+        const GET = 'https://countapi.mileshilliard.com/api/v1/get/piscinazerostress-ec-visitas';
+        const HIT = 'https://countapi.mileshilliard.com/api/v1/hit/piscinazerostress-ec-visitas';
 
-        fetch(endpoint)
-            .then(r => r.json())
-            .then(d => {
-                const total = parseInt(d.value);
-                if (!yaContado) sessionStorage.setItem('pzs-visita', true);
-                setVisitas(total);
-            })
-            .catch(() => {});
+        const fetchContador = (url) =>
+            fetch(url)
+                .then(r => r.json())
+                .then(d => setVisitas(parseInt(d.value)))
+                .catch(() => {});
+
+        const yaContado = sessionStorage.getItem('pzs-visita');
+        if (!yaContado) {
+            sessionStorage.setItem('pzs-visita', true);
+            fetchContador(HIT);
+        } else {
+            fetchContador(GET);
+        }
+
+        const intervalo = setInterval(() => fetchContador(GET), 1000);
+        return () => clearInterval(intervalo);
     }, []);
 
     const badges = [
