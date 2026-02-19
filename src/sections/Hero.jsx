@@ -34,16 +34,15 @@ const Hero = () => {
         hasFetched.current = true;
 
         const yaContado = sessionStorage.getItem('pzs-visita');
-        if (yaContado) {
-            setVisitas(parseInt(yaContado));
-            return;
-        }
+        const endpoint = yaContado
+            ? 'https://countapi.mileshilliard.com/api/v1/get/piscinazerostress-ec-visitas'
+            : 'https://countapi.mileshilliard.com/api/v1/hit/piscinazerostress-ec-visitas';
 
-        fetch('https://countapi.mileshilliard.com/api/v1/hit/piscinazerostress-ec-visitas')
+        fetch(endpoint)
             .then(r => r.json())
             .then(d => {
                 const total = parseInt(d.value);
-                sessionStorage.setItem('pzs-visita', total);
+                if (!yaContado) sessionStorage.setItem('pzs-visita', true);
                 setVisitas(total);
             })
             .catch(() => {});
