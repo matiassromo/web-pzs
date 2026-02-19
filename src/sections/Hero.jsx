@@ -32,9 +32,20 @@ const Hero = () => {
     useEffect(() => {
         if (hasFetched.current) return;
         hasFetched.current = true;
+
+        const yaContado = sessionStorage.getItem('pzs-visita');
+        if (yaContado) {
+            setVisitas(parseInt(yaContado));
+            return;
+        }
+
         fetch('https://countapi.mileshilliard.com/api/v1/hit/piscinazerostress-ec-visitas')
             .then(r => r.json())
-            .then(d => setVisitas(parseInt(d.value)))
+            .then(d => {
+                const total = parseInt(d.value);
+                sessionStorage.setItem('pzs-visita', total);
+                setVisitas(total);
+            })
             .catch(() => {});
     }, []);
 
