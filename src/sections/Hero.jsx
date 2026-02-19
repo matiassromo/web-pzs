@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight, MessageCircle } from 'lucide-react';
 
@@ -20,6 +20,7 @@ const backgroundImages = [
 const Hero = () => {
     const [currentImage, setCurrentImage] = useState(0);
     const [visitas, setVisitas] = useState(null);
+    const hasFetched = useRef(false);
 
     useEffect(() => {
         const interval = setInterval(() => {
@@ -29,6 +30,8 @@ const Hero = () => {
     }, []);
 
     useEffect(() => {
+        if (hasFetched.current) return;
+        hasFetched.current = true;
         fetch('https://countapi.mileshilliard.com/api/v1/hit/piscinazerostress-ec-visitas')
             .then(r => r.json())
             .then(d => setVisitas(parseInt(d.value)))
