@@ -19,12 +19,20 @@ const backgroundImages = [
 
 const Hero = () => {
     const [currentImage, setCurrentImage] = useState(0);
+    const [visitas, setVisitas] = useState(null);
 
     useEffect(() => {
         const interval = setInterval(() => {
             setCurrentImage((prev) => (prev + 1) % backgroundImages.length);
         }, 4000);
         return () => clearInterval(interval);
+    }, []);
+
+    useEffect(() => {
+        fetch('https://countapi.mileshilliard.com/api/v1/hit/piscinazerostress-ec-visitas')
+            .then(r => r.json())
+            .then(d => setVisitas(parseInt(d.value)))
+            .catch(() => {});
     }, []);
 
     const badges = [
@@ -112,6 +120,22 @@ const Hero = () => {
                             </span>
                         ))}
                     </motion.div>
+
+                    {/* Contador de visitas */}
+                    {visitas && (
+                        <motion.div
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 1.4, duration: 0.8 }}
+                            className="flex justify-center md:justify-start"
+                        >
+                            <span className="flex items-center gap-2 bg-cyan-500/20 backdrop-blur-md border border-cyan-400/30 px-4 py-1.5 rounded-full text-sm font-semibold text-cyan-200 shadow-sm">
+                                <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" />
+                                {visitas.toLocaleString()} personas han visitado esta página
+                            </span>
+                        </motion.div>
+                    )}
+
                 </div>
             </div>
 
