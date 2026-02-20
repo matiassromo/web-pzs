@@ -117,7 +117,10 @@ const Schedule = () => {
                                     <span>Jueves a Domingo</span>
                                     <span className="font-bold text-gray-900">10:00 - 19:00</span>
                                 </div>
-                                <p className="text-sm text-gray-400 mt-2 italic">* Feriados pueden variar</p>
+                                <div className="flex justify-between border-b border-gray-100 pb-2">
+                                        <span>Feriados</span>
+                                        <span className="font-bold text-gray-900">10:00 - 19:00</span>
+                                    </div>
                             </div>
                         </div>
                     </motion.div>
