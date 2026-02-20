@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Utensils, IceCream, GlassWater } from 'lucide-react';
+import { Utensils, GlassWater } from 'lucide-react';
 
 const menuCategories = [
     {
@@ -8,12 +8,10 @@ const menuCategories = [
         title: "Comidas",
         icon: <Utensils className="w-6 h-6" />,
         items: [
-            "Salchipapa",
-            "Salchipapa con huevo",
-            "Papi huevo",
+            "Salchipapas",
             "Choclo con queso",
-            "Porción de queso",
-            "Limón con sal"
+            "Ensalada de frutas",
+            "Porción de fruta",
         ]
     },
     {
@@ -23,24 +21,15 @@ const menuCategories = [
         items: [
             "Limonada Imperial",
             "Limonada Natural",
-            "Nestea",
-            "Gatorade",
+            "Té helado",
+            "Bebidas energizantes",
             "Guitig",
             "Agua sin gas",
             "Gaseosas",
-            "Cerveza (Pilsener / Club)"
+            "Cerveza",
+            "Nevado",
         ]
     },
-    {
-        id: 'postres',
-        title: "Postres y Frutas",
-        icon: <IceCream className="w-6 h-6" />,
-        items: [
-            "Ensalada de frutas",
-            "Nevado",
-            "Porción de sandía"
-        ]
-    }
 ];
 
 const MenuSection = () => {
