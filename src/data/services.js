@@ -28,7 +28,7 @@ export const servicesData = [
         title: "Hidromasaje",
         img: imgHidro,
         description: "Déjate envolver por burbujas relajantes en nuestro hidromasaje.",
-        shortDesc: "Relaja tus músculos en nuestras modernas tinas de hidromasaje.",
+        shortDesc: "Reinicia tu energía con nuestro hidromasaje de burbujas relajantes.",
     },
     {
         id: "SaunaTurco",
