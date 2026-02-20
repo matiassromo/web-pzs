@@ -23,7 +23,7 @@ const menuCategories = [
             "Limonada Natural",
             "Té helado",
             "Bebidas energizantes",
-            "Guitig",
+            "Agua con gas",
             "Agua sin gas",
             "Gaseosas",
             "Cerveza",
