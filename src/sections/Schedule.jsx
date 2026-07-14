@@ -141,7 +141,6 @@ const Schedule = () => {
                             <div className="space-y-2 text-gray-600">
                                 <div className="flex justify-between border-b border-gray-100 pb-2">
                                     <span>Lunes a Viernes</span>
-                                    <span className="font-bold text-gray-900">17:30 - 18:20</span>
                                 </div>
                                 <p className="text-sm text-gray-600 mt-4 leading-relaxed">
                                     Grupos por niveles. <br />
