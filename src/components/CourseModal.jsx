@@ -1,5 +1,5 @@
 import React from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { X, Heart, Smile, Sun, Brain, Users, TrendingUp, ShieldCheck, Droplets, Shield, Home } from 'lucide-react';
 
 const benefits = [
@@ -25,21 +25,22 @@ const CourseModal = ({ onClose }) => {
     const whatsappHref = 'https://wa.me/593992509868?text=' + encodeURIComponent('Hola, quiero inscribirme en el curso vacacional intensivo de natación.');
 
     return (
-        <AnimatePresence>
+        <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+            onClick={onClose}
+        >
             <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
-                onClick={onClose}
+                initial={{ scale: 0.85, opacity: 0, y: 40 }}
+                animate={{ scale: 1, opacity: 1, y: 0 }}
+                exit={{ scale: 0.85, opacity: 0, y: 40 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 28 }}
+                className="bg-white rounded-2xl overflow-hidden max-w-lg w-full shadow-2xl relative max-h-[90vh] overflow-y-auto"
+                onClick={(e) => e.stopPropagation()}
             >
-                <motion.div
-                    initial={{ scale: 0.9, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    exit={{ scale: 0.9, opacity: 0 }}
-                    className="bg-white rounded-2xl overflow-hidden max-w-lg w-full shadow-2xl relative max-h-[90vh] overflow-y-auto"
-                    onClick={(e) => e.stopPropagation()}
-                >
                     <button
                         onClick={onClose}
                         className="absolute top-4 right-4 z-10 bg-black/50 hover:bg-black/70 text-white p-2 rounded-full transition-colors"
@@ -114,9 +115,8 @@ const CourseModal = ({ onClose }) => {
                             Inscribirme aquí
                         </a>
                     </div>
-                </motion.div>
             </motion.div>
-        </AnimatePresence>
+        </motion.div>
     );
 };
 

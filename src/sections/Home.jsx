@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { AnimatePresence } from 'framer-motion';
 import Hero from './Hero';
 import Services from './Services';
 import MenuSection from './MenuSection';
@@ -16,9 +17,11 @@ const Home = () => {
             <MenuSection />
             <Schedule />
             <Contact />
-            {showCourseModal && (
-                <CourseModal onClose={() => setShowCourseModal(false)} />
-            )}
+            <AnimatePresence>
+                {showCourseModal && (
+                    <CourseModal key="course-modal" onClose={() => setShowCourseModal(false)} />
+                )}
+            </AnimatePresence>
         </div>
     );
 };
