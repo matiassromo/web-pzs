@@ -89,7 +89,7 @@ const Schedule = () => {
                         viewport={{ once: true }}
                         className="bg-white rounded-2xl shadow-xl overflow-hidden flex-1 border border-slate-100 flex flex-col sm:flex-row"
                     >
-                        <div className={`p-6 sm:w-1/3 flex flex-col items-center text-center justify-center gap-2 ${status.color === 'green' ? 'bg-green-50' :
+                        <div className={`p-6 sm:w-1/3 flex flex-col items-center text-center justify-center gap-4 ${status.color === 'green' ? 'bg-green-50' :
                             status.color === 'amber' ? 'bg-amber-50' :
                                 status.color === 'blue' ? 'bg-blue-50' : 'bg-red-50'
                             }`}>
@@ -128,7 +128,7 @@ const Schedule = () => {
                         transition={{ delay: 0.2 }}
                         className="bg-white rounded-2xl shadow-xl overflow-hidden flex-1 border border-slate-100 flex flex-col sm:flex-row"
                     >
-                        <div className="bg-brand-light p-6 sm:w-1/3 flex flex-col items-center justify-center gap-2">
+                        <div className="bg-brand-light p-6 sm:w-1/3 flex flex-col items-center justify-center gap-4">
                             <div className="p-4 rounded-full bg-white text-brand">
                                 <Calendar size={32} />
                             </div>
