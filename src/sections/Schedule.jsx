@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Clock, Calendar, CheckCircle2, XCircle, AlertCircle } from 'lucide-react';
+import CourseModal from '../components/CourseModal';
 
 const Schedule = () => {
     const [status, setStatus] = useState({ state: 'cerrado', label: 'Cerrado', color: 'gray' });
     const [now, setNow] = useState(new Date());
+    const [showCourseModal, setShowCourseModal] = useState(false);
 
     useEffect(() => {
         const updateStatus = () => {
@@ -131,7 +133,8 @@ const Schedule = () => {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: 0.2 }}
-                        className="bg-white rounded-2xl shadow-xl overflow-hidden flex-1 border border-slate-100 flex flex-col sm:flex-row"
+                        onClick={() => setShowCourseModal(true)}
+                        className="bg-white rounded-2xl shadow-xl overflow-hidden flex-1 border border-slate-100 flex flex-col sm:flex-row cursor-pointer hover:shadow-2xl transition-shadow"
                     >
                         <div className="bg-brand-light p-6 sm:w-1/3 flex flex-col items-center justify-center gap-2">
                             <div className="p-4 rounded-full bg-white text-brand">
@@ -158,6 +161,10 @@ const Schedule = () => {
 
                 </div>
             </div>
+
+            {showCourseModal && (
+                <CourseModal onClose={() => setShowCourseModal(false)} />
+            )}
         </section>
     );
 };
