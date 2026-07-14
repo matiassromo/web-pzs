@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Clock, Calendar, CheckCircle2, XCircle, AlertCircle } from 'lucide-react';
+import CourseModal from '../components/CourseModal';
 
 const Schedule = () => {
     const [status, setStatus] = useState({ state: 'cerrado', label: 'Cerrado', color: 'gray' });
     const [now, setNow] = useState(new Date());
+    const [showCourseModal, setShowCourseModal] = useState(false);
 
     useEffect(() => {
         const updateStatus = () => {
@@ -13,7 +15,7 @@ const Schedule = () => {
             const day = current.getDay(); // 0=Sun, 1=Mon, ..., 6=Sat
             const mins = current.getHours() * 60 + current.getMinutes();
 
-            const OPEN_DAYS = [0, 4, 5, 6]; // Sun, Thu, Fri, Sat
+            const OPEN_DAYS = [0, 2, 3, 4, 5, 6]; // Sun, Tue, Wed, Thu, Fri, Sat
             const OPEN_MIN = 10 * 60; // 10:00
             const CLOSE_MIN = 19 * 60; // 19:00
             const CLOSING_SOON_MIN = 30;
@@ -43,8 +45,8 @@ const Schedule = () => {
 
     const days = [
         { id: 1, name: 'Lun', open: false },
-        { id: 2, name: 'Mar', open: false },
-        { id: 3, name: 'Mié', open: false },
+        { id: 2, name: 'Mar', open: true },
+        { id: 3, name: 'Mié', open: true },
         { id: 4, name: 'Jue', open: true },
         { id: 5, name: 'Vie', open: true },
         { id: 6, name: 'Sáb', open: true },
@@ -110,17 +112,13 @@ const Schedule = () => {
                         </div>
                         <div className="p-8 flex-1">
                             <h3 className="text-2xl font-bold text-brand-dark mb-2">Atención al Público</h3>
-                            <span className="inline-block bg-brand-light text-brand-dark text-xs font-bold px-2 py-1 rounded mb-4">HORARIO REGULAR</span>
+                            <span className="inline-block bg-brand-light text-brand-dark text-xs font-bold px-2 py-1 rounded mb-4">HORARIO VACACIONAL</span>
 
                             <div className="space-y-2 text-gray-600">
                                 <div className="flex justify-between border-b border-gray-100 pb-2">
-                                    <span>Jueves a Domingo</span>
+                                    <span>Martes a Domingo</span>
                                     <span className="font-bold text-gray-900">10:00 - 19:00</span>
                                 </div>
-                                <div className="flex justify-between border-b border-gray-100 pb-2">
-                                        <span>Feriados</span>
-                                        <span className="font-bold text-gray-900">10:00 - 19:00</span>
-                                    </div>
                             </div>
                         </div>
                     </motion.div>
@@ -131,7 +129,8 @@ const Schedule = () => {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: 0.2 }}
-                        className="bg-white rounded-2xl shadow-xl overflow-hidden flex-1 border border-slate-100 flex flex-col sm:flex-row"
+                        onClick={() => setShowCourseModal(true)}
+                        className="bg-white rounded-2xl shadow-xl overflow-hidden flex-1 border border-slate-100 flex flex-col sm:flex-row cursor-pointer hover:shadow-2xl transition-shadow"
                     >
                         <div className="bg-brand-light p-6 sm:w-1/3 flex flex-col items-center justify-center gap-2">
                             <div className="p-4 rounded-full bg-white text-brand">
@@ -140,12 +139,12 @@ const Schedule = () => {
                             <span className="font-bold text-brand-dark">Cursos</span>
                         </div>
                         <div className="p-8 flex-1">
-                            <h3 className="text-2xl font-bold text-brand-dark mb-2">Cursos de Natación</h3>
+                            <h3 className="text-2xl font-bold text-brand-dark mb-2">Cursos Vacacionales Intensivos</h3>
                             <span className="inline-block bg-yellow-100 text-yellow-800 text-xs font-bold px-2 py-1 rounded mb-4">CUPOS LIMITADOS</span>
 
                             <div className="space-y-2 text-gray-600">
                                 <div className="flex justify-between border-b border-gray-100 pb-2">
-                                    <span>Jueves y Viernes</span>
+                                    <span>Lunes a Viernes</span>
                                     <span className="font-bold text-gray-900">17:30 - 18:20</span>
                                 </div>
                                 <p className="text-sm text-gray-600 mt-4 leading-relaxed">
@@ -158,6 +157,10 @@ const Schedule = () => {
 
                 </div>
             </div>
+
+            {showCourseModal && (
+                <CourseModal onClose={() => setShowCourseModal(false)} />
+            )}
         </section>
     );
 };
