@@ -153,7 +153,7 @@ const Schedule = () => {
 
                 </div>
             </div>
-        </section>
+ñ        </section>
     );
 };
 
