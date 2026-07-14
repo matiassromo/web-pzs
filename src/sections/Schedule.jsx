@@ -156,6 +156,9 @@ const Schedule = () => {
                                     <strong>¡Aprende a nadar con nosotros!</strong>
                                 </p>
                             </div>
+                            <div className="mt-4 inline-flex items-center gap-1 text-brand font-semibold text-sm">
+                                Ver más e inscribirse <span>→</span>
+                            </div>
                         </div>
                     </motion.div>
 
