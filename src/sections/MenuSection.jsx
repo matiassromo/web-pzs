@@ -1,5 +1,4 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import { Utensils, GlassWater } from 'lucide-react';
 
 const comidas = [
@@ -51,12 +50,7 @@ const MenuSection = () => {
 
                 <div className="flex flex-wrap justify-center gap-8">
                     {/* Comidas */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        className="bg-white rounded-2xl p-6 shadow-lg border border-slate-100 w-full md:w-[calc(50%-2rem)] lg:w-[calc(33.333%-2rem)] min-w-[300px]"
-                    >
+                    <div className="bg-white rounded-2xl p-6 shadow-lg border border-slate-100 w-full md:w-[calc(50%-2rem)] lg:w-[calc(33.333%-2rem)] min-w-[min(300px,100%)]">
                         <div className="flex items-center gap-3 mb-6 pb-4 border-b border-gray-100">
                             <div className="p-3 bg-brand-light/30 rounded-xl text-brand">
                                 <Utensils className="w-6 h-6" />
@@ -71,16 +65,10 @@ const MenuSection = () => {
                                 </li>
                             ))}
                         </ul>
-                    </motion.div>
+                    </div>
 
                     {/* Bebidas */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.1 }}
-                        className="bg-white rounded-2xl p-6 shadow-lg border border-slate-100 w-full md:w-[calc(50%-2rem)] lg:w-[calc(33.333%-2rem)] min-w-[300px]"
-                    >
+                    <div className="bg-white rounded-2xl p-6 shadow-lg border border-slate-100 w-full md:w-[calc(50%-2rem)] lg:w-[calc(33.333%-2rem)] min-w-[min(300px,100%)]">
                         <div className="flex items-center gap-3 mb-6 pb-4 border-b border-gray-100">
                             <div className="p-3 bg-brand-light/30 rounded-xl text-brand">
                                 <GlassWater className="w-6 h-6" />
@@ -115,7 +103,7 @@ const MenuSection = () => {
                                 </li>
                             ))}
                         </ul>
-                    </motion.div>
+                    </div>
                 </div>
             </div>
         </section>

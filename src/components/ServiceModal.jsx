@@ -29,7 +29,7 @@ const ServiceModal = ({ service, onClose }) => {
                     initial={{ scale: 0.9, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
                     exit={{ scale: 0.9, opacity: 0 }}
-                    className="bg-white rounded-2xl overflow-hidden max-w-2xl w-full shadow-2xl relative"
+                    className="bg-white rounded-2xl overflow-y-auto max-h-[90vh] max-w-2xl w-full shadow-2xl relative"
                     onClick={(e) => e.stopPropagation()}
                 >
                     <button
@@ -59,9 +59,9 @@ const ServiceModal = ({ service, onClose }) => {
                         )}
                     </div>
 
-                    <div className="p-8 text-center">
-                        <h3 className="text-2xl font-display font-bold text-brand-dark mb-4">{service.title}</h3>
-                        <p className="text-gray-600 leading-relaxed text-lg" dangerouslySetInnerHTML={{ __html: service.description }} />
+                    <div className="p-6 sm:p-8 text-center">
+                        <h3 className="text-xl sm:text-2xl font-display font-bold text-brand-dark mb-4">{service.title}</h3>
+                        <p className="text-gray-600 leading-relaxed text-base sm:text-lg" dangerouslySetInnerHTML={{ __html: service.description }} />
                     </div>
                 </motion.div>
             </motion.div>

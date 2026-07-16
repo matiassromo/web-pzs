@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
 import { Clock, Calendar, CheckCircle2, XCircle, AlertCircle } from 'lucide-react';
 const Schedule = () => {
     const [status, setStatus] = useState({ state: 'cerrado', label: 'Cerrado', color: 'gray' });
@@ -83,12 +82,7 @@ const Schedule = () => {
                 {/* Cards */}
                 <div className="flex flex-col lg:flex-row gap-8 justify-center items-stretch max-w-5xl mx-auto">
                     {/* General Schedule */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        className="bg-white rounded-2xl shadow-xl overflow-hidden flex-1 border border-slate-100 flex flex-col sm:flex-row"
-                    >
+                    <div className="bg-white rounded-2xl shadow-xl overflow-hidden flex-1 border border-slate-100 flex flex-col sm:flex-row">
                         <div className={`p-6 sm:w-1/3 flex flex-col items-center text-center justify-center gap-4 ${status.color === 'green' ? 'bg-green-50' :
                             status.color === 'amber' ? 'bg-amber-50' :
                                 status.color === 'blue' ? 'bg-blue-50' : 'bg-red-50'
@@ -118,16 +112,10 @@ const Schedule = () => {
                                 </div>
                             </div>
                         </div>
-                    </motion.div>
+                    </div>
 
                     {/* Courses */}
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.2 }}
-                        className="bg-white rounded-2xl shadow-xl overflow-hidden flex-1 border border-slate-100 flex flex-col sm:flex-row"
-                    >
+                    <div className="bg-white rounded-2xl shadow-xl overflow-hidden flex-1 border border-slate-100 flex flex-col sm:flex-row">
                         <div className="bg-brand-light p-6 sm:w-1/3 flex flex-col items-center justify-center gap-4">
                             <div className="p-4 rounded-full bg-white text-brand">
                                 <Calendar size={32} />
@@ -148,7 +136,7 @@ const Schedule = () => {
                                 </p>
                             </div>
                         </div>
-                    </motion.div>
+                    </div>
 
                 </div>
             </div>
