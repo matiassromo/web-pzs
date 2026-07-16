@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Heart, Smile, Sun, Brain, Users, TrendingUp, ShieldCheck, Droplets, Shield, Home } from 'lucide-react';
 
@@ -23,6 +23,11 @@ const poolFeatures = [
 
 const CourseModal = ({ onClose }) => {
     const whatsappHref = 'https://wa.me/593992509868?text=' + encodeURIComponent('Hola, quiero inscribirme en los cursos de natación.');
+
+    useEffect(() => {
+        document.body.style.overflow = 'hidden';
+        return () => { document.body.style.overflow = ''; };
+    }, []);
 
     return (
         <AnimatePresence>
