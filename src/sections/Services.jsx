@@ -19,13 +19,9 @@ const Services = () => {
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    {servicesData.map((service, index) => (
+                    {servicesData.map((service) => (
                         <motion.div
                             key={service.id}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: index * 0.1 }}
                             whileHover={{ y: -5 }}
                             onClick={() => setSelectedService(service)}
                             className="bg-white rounded-xl overflow-hidden shadow-lg cursor-pointer group border border-slate-100"

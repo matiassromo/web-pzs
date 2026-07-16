@@ -22,13 +22,29 @@ const Navbar = () => {
         { name: 'Contacto', href: '#contacto' },
     ];
 
+    const NAV_OFFSET = 80;
+
+    const handleNavClick = (e, href) => {
+        // Let modified/middle clicks behave natively (open in new tab, etc.)
+        if (e.metaKey || e.ctrlKey || e.shiftKey || e.button === 1) return;
+
+        e.preventDefault();
+        setIsOpen(false);
+
+        const target = document.querySelector(href);
+        if (!target) return;
+
+        const top = target.getBoundingClientRect().top + window.scrollY - NAV_OFFSET;
+        window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+    };
+
     return (
         <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'bg-brand/90 backdrop-blur-md shadow-lg py-2' : 'bg-transparent py-4'}`}>
             <div className="container-custom flex justify-between items-center">
                 {/* Logo */}
                 <a href="#" className="flex items-center gap-2 group">
                     {/* Placeholder for Logo if image is not available, or use text */}
-                    <div className="text-white font-display font-bold text-2xl tracking-tight group-hover:scale-105 transition-transform">
+                    <div className="text-white font-display font-bold text-lg sm:text-xl md:text-2xl tracking-tight group-hover:scale-105 transition-transform">
                         PISCINA <span className="text-cyan-300">ZERO STRESS</span>
                     </div>
                 </a>
@@ -39,6 +55,7 @@ const Navbar = () => {
                         <a
                             key={link.name}
                             href={link.href}
+                            onClick={(e) => handleNavClick(e, link.href)}
                             className="text-white font-medium hover:text-cyan-300 transition-colors text-sm uppercase tracking-wide"
                         >
                             {link.name}
@@ -60,18 +77,19 @@ const Navbar = () => {
             <AnimatePresence>
                 {isOpen && (
                     <motion.div
-                        initial={{ opacity: 0, height: 0 }}
-                        animate={{ opacity: 1, height: 'auto' }}
-                        exit={{ opacity: 0, height: 0 }}
-                        className="md:hidden bg-brand-dark/95 backdrop-blur-xl border-t border-white/10 overflow-hidden"
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -10 }}
+                        transition={{ duration: 0.2 }}
+                        className="md:hidden bg-brand-dark/95 backdrop-blur-xl border-t border-white/10"
                     >
                         <div className="flex flex-col p-4 gap-4 items-center">
                             {navLinks.map((link) => (
                                 <a
                                     key={link.name}
                                     href={link.href}
-                                    className="text-white text-lg font-medium py-2 hover:text-cyan-300 transition-colors w-full text-center"
-                                    onClick={() => setIsOpen(false)}
+                                    className="touch-manipulation text-white text-lg font-medium py-2 hover:text-cyan-300 transition-colors w-full text-center"
+                                    onClick={(e) => handleNavClick(e, link.href)}
                                 >
                                     {link.name}
                                 </a>

@@ -1,5 +1,4 @@
 import React from 'react';
-import { motion } from 'framer-motion';
 import { MapPin, Phone, ExternalLink } from 'lucide-react';
 
 import imgVideo from '../assets/videovigilancia.jpg'; // Using as a background maybe? unused for now.
@@ -19,13 +18,7 @@ const Contact = () => {
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
                     {/* Map */}
-                    <motion.div
-                        initial={{ opacity: 0, x: -50 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.8 }}
-                        className="rounded-2xl overflow-hidden shadow-2xl h-[400px] relative border-4 border-white ring-1 ring-gray-100"
-                    >
+                    <div className="rounded-2xl overflow-hidden shadow-2xl h-[280px] sm:h-[350px] lg:h-[400px] relative border-4 border-white ring-1 ring-gray-100">
                         <iframe
                             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3917.0871284482146!2d-78.45197478956736!3d-0.004791799995135889!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x91d58823d468800f%3A0xf9d77d74486d0179!2sPiscina%20Zero%20Stress%20(Mitad%20del%20Mundo)!5e1!3m2!1ses-419!2sec!4v1754256824853!5m2!1ses-419!2sec"
                             width="100%"
@@ -36,16 +29,10 @@ const Contact = () => {
                             referrerPolicy="no-referrer-when-downgrade"
                             title="Mapa de Ubicación"
                         ></iframe>
-                    </motion.div>
+                    </div>
 
                     {/* Info */}
-                    <motion.div
-                        initial={{ opacity: 0, x: 50 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ duration: 0.8 }}
-                        className="flex flex-col gap-8"
-                    >
+                    <div className="flex flex-col gap-8">
                         <div className="bg-brand-light/30 p-8 rounded-2xl border border-brand-light">
                             <h3 className="text-2xl font-bold text-brand-dark mb-4 flex items-center gap-2">
                                 <MapPin className="text-brand" /> Ubicación
@@ -83,7 +70,7 @@ const Contact = () => {
                                 Chatear en WhatsApp
                             </a>
                         </div>
-                    </motion.div>
+                    </div>
                 </div>
             </div>
         </section>

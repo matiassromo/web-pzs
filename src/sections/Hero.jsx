@@ -62,7 +62,7 @@ const Hero = () => {
     ];
 
     return (
-        <section id="bienvenidos" className="relative h-screen flex items-center justify-center overflow-hidden">
+        <section id="bienvenidos" className="relative min-h-[100dvh] flex items-center justify-center overflow-hidden py-28 md:py-0">
             {/* Background Slideshow */}
             <AnimatePresence mode='popLayout'>
                 <motion.div
@@ -86,7 +86,7 @@ const Hero = () => {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.2 }}
                     >
-                        <h1 className="font-display font-bold text-5xl md:text-7xl leading-tight text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-white drop-shadow-lg">
+                        <h1 className="font-display font-bold text-4xl sm:text-5xl md:text-7xl leading-tight text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-white drop-shadow-lg">
                             ¡Bienvenidos a <br /> Zero Stress!
                         </h1>
                     </motion.div>
