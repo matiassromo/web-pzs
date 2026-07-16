@@ -1,12 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const ServiceModal = ({ service, onClose }) => {
-    if (!service) return null;
-
-    const hasCarousel = service.images && service.images.length > 1;
+    const hasCarousel = service && service.images && service.images.length > 1;
     const [currentSlide, setCurrentSlide] = useState(0);
+
+    useEffect(() => {
+        if (!service) return;
+        document.body.style.overflow = 'hidden';
+        return () => { document.body.style.overflow = ''; };
+    }, [service]);
+
+    if (!service) return null;
 
     const nextSlide = () => {
         setCurrentSlide((prev) => (prev + 1) % service.images.length);
