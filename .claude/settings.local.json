@@ -1,7 +1,23 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npm install:*)"
+      "Bash(npm install:*)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" http://localhost:5174/)",
+      "Bash(curl -s http://localhost:5174/src/sections/Hero.jsx)",
+      "Skill(run)",
+      "Bash(chromium-cli --help)",
+      "Bash(npx --yes playwright --version)",
+      "Bash(npx --yes playwright install chromium)",
+      "Bash(npm init *)",
+      "Bash(node verify-menu2.mjs)",
+      "Bash(node verify-menu3.mjs)",
+      "Bash(curl -s http://localhost:5174/src/components/Navbar.jsx)",
+      "Bash(npx vite *)",
+      "Read(//c/Users/Matías/Desktop/PC/web-pzs-vacacional/**)",
+      "Read(//tmp/**)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(node -e \"const icons = require\\('lucide-react'\\); console.log\\(['Beer','Droplet','Droplets','IceCream','IceCream2','IceCreamCone','CupSoda','Coffee','Wine'].filter\\(n => n in icons\\).join\\(', '\\)\\)\")"
     ]
   }
 }

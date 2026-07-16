@@ -11,18 +11,23 @@ const Schedule = () => {
             const day = current.getDay(); // 0=Sun, 1=Mon, ..., 6=Sat
             const mins = current.getHours() * 60 + current.getMinutes();
 
-            const OPEN_DAYS = [0, 2, 3, 4, 5, 6]; // Sun, Tue, Wed, Thu, Fri, Sat
-            const OPEN_MIN = 10 * 60; // 10:00
+            const WEEKEND_DAYS = [0, 6]; // Sun, Sat
+            const WEEKDAY_OPEN_DAYS = [2, 3, 4, 5]; // Tue, Wed, Thu, Fri
+            const isWeekend = WEEKEND_DAYS.includes(day);
+            const isOpenDay = isWeekend || WEEKDAY_OPEN_DAYS.includes(day);
+
+            const OPEN_MIN = (isWeekend ? 10 : 11) * 60; // 10:00 finde, 11:00 entre semana
+            const OPEN_LABEL = isWeekend ? '10:00' : '11:00';
             const CLOSE_MIN = 19 * 60; // 19:00
             const CLOSING_SOON_MIN = 30;
 
-            if (!OPEN_DAYS.includes(day)) {
+            if (!isOpenDay) {
                 setStatus({ state: 'cerrado', label: 'Cerrado hoy', color: 'red' });
                 return;
             }
 
             if (mins < OPEN_MIN) {
-                setStatus({ state: 'por-abrir', label: 'Abre a las 10:00', color: 'blue' });
+                setStatus({ state: 'por-abrir', label: `Abre a las ${OPEN_LABEL}`, color: 'blue' });
             } else if (mins >= OPEN_MIN && mins < CLOSE_MIN) {
                 if (CLOSE_MIN - mins <= CLOSING_SOON_MIN) {
                     setStatus({ state: 'por-cerrar', label: 'Cierra pronto (19:00)', color: 'amber' });
@@ -30,7 +35,7 @@ const Schedule = () => {
                     setStatus({ state: 'abierto', label: 'Abierto ahora', color: 'green' });
                 }
             } else {
-                setStatus({ state: 'cerrado', label: 'Cerrado por hoy', color: 'red' });
+                setStatus({ state: 'cerrado', label: 'Cerrado', color: 'red' });
             }
         };
 
@@ -107,7 +112,11 @@ const Schedule = () => {
 
                             <div className="space-y-2 text-gray-600">
                                 <div className="flex justify-between border-b border-gray-100 pb-2">
-                                    <span>Martes a Domingo</span>
+                                    <span>Martes a Viernes</span>
+                                    <span className="font-bold text-gray-900">11:00 - 19:00</span>
+                                </div>
+                                <div className="flex justify-between border-b border-gray-100 pb-2">
+                                    <span>Sábado y Domingo</span>
                                     <span className="font-bold text-gray-900">10:00 - 19:00</span>
                                 </div>
                             </div>
