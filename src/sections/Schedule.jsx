@@ -17,7 +17,7 @@ const Schedule = () => {
             const CLOSING_SOON_MIN = 30;
 
             if (!OPEN_DAYS.includes(day)) {
-                setStatus({ state: 'cerrado', label: 'Cerrado hoy', color: 'red' });
+                setStatus({ state: 'cerrado', label: 'Cerrado', color: 'red' });
                 return;
             }
 
@@ -30,7 +30,7 @@ const Schedule = () => {
                     setStatus({ state: 'abierto', label: 'Abierto ahora', color: 'green' });
                 }
             } else {
-                setStatus({ state: 'cerrado', label: 'Cerrado por hoy', color: 'red' });
+                setStatus({ state: 'cerrado', label: 'Cerrado', color: 'red' });
             }
         };
 
